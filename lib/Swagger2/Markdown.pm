@@ -75,13 +75,16 @@ Returns a string of markdown in API Blueprint format
 =cut
 
 sub api_blueprint {
-    my ( $self ) = @_;
+    my ( $self,$args ) = @_;
 
     my $output;
 
     $self->_template->process(
         Swagger2::Markdown::API::Blueprint->template,
-        $self->swagger2->tree->data,
+        {
+            f => delete( $self->swagger2->tree->data->{'x-api-blueprint'} ),
+            s => $self->swagger2->tree->data,
+        },
         \$output,
     ) || die $self->_template->error;
 

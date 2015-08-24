@@ -21,7 +21,6 @@ paths:
   /message:
     get:
       summary: Say hello to the world
-      description: Returns a plain text "Hello World" response. Useful for testing.
       produces:
         - text/plain
       responses:
@@ -29,7 +28,6 @@ paths:
           description: The response message
           schema:
             format: string
-          examples:
-            text/plain: "Hello World!"
+            example: "Hello World!"
 
 # vim: ts=2:sw=2:et

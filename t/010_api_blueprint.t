@@ -40,7 +40,8 @@ foreach my $markdown_file ( sort keys %files ) {
 
     my $got = $s2md->api_blueprint;
 
-    is_string( $got,$expected,$files{ $markdown_file } );
+    is_string( $got,$expected,$files{ $markdown_file } )
+        || note $got;
 }
 
 done_testing();
