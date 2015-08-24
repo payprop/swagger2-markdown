@@ -1,0 +1,15 @@
+.travis.yml
+Changes
+MANIFEST
+Makefile.PL
+Makefile.old
+README.md
+lib/Swagger2/Markdown/API/Blueprint.pm
+lib/Swagger2/Markdown.pm
+t/001_compiles_pod.t
+t/003_changes.t
+t/010_api_blueprint.t
+t/markdown/README
+t/markdown/hello_world.md
+t/swagger/README
+t/swagger/hello_world.yaml

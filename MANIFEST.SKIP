@@ -1,0 +1,9 @@
+.git
+\.old
+\.swp
+~$
+^blib/
+^Makefile$
+^MANIFEST.*
+^MYMETA*
+^Swagger2-Markdown
