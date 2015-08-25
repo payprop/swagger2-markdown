@@ -106,9 +106,13 @@ the path like so (again, YAML example here):
     paths:
       /message:
         x-api-blueprint:
+          group: Messages
           summary: My Message
           description: |
             A longer description here
+
+C<summary> and C<description> should be self explanatory, C<group> will make the API
+Blueprint output use grouping resources format
 
 =cut
 

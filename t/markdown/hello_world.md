@@ -17,4 +17,3 @@ Also please keep in mind that every single example in this course is a **real AP
 
         Hello World!
 
-
