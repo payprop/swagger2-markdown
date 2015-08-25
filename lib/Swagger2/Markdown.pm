@@ -109,10 +109,22 @@ the path like so (again, YAML example here):
           group: Messages
           summary: My Message
           description: |
-            A longer description here
+            The description that will appear under the group section
+          group_description: |
+            The description that will appear under the resource_section header
 
 C<summary> and C<description> should be self explanatory, C<group> will make the API
 Blueprint output use grouping resources format
+
+You can add examples to the parameters section of a method using C<x-example>:
+
+    paths:
+      /messages:
+        get:
+          parameters:
+            - in: query
+              ...
+              x-example: 3
 
 =cut
 

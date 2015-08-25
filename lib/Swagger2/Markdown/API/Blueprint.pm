@@ -12,6 +12,28 @@ $Template::Stash::LIST_OPS->{ request_headers } = sub {
     return @{ $headers } ? $headers : undef;
 };
 
+$Template::Stash::LIST_OPS->{ path_and_query_params } = sub {
+    my $list = shift;
+    my $params = [ grep { $_->{in} =~ /path|query/ } @$list ];
+    return @{ $params } ? $params : undef;
+};
+
+$Template::Stash::LIST_OPS->{ none_path_and_query_params } = sub {
+    my $list = shift;
+    my $params = [ grep { $_->{in} !~ /path|query/ } @$list ];
+    return @{ $params } ? $params : undef;
+};
+
+$Template::Stash::HASH_OPS->{ sort_methods_by_group } = sub {
+    my $hash = shift;
+
+    return sort {
+        ( $hash->{$a}{"x-api-blueprint"}{group} // '' )
+            cmp ( $hash->{$b}{"x-api-blueprint"}{group} // '' )
+        || $a cmp $b
+    } keys %{ $hash };
+};
+
 sub template {
     my ( $args ) = @_;
 
@@ -65,10 +87,13 @@ sub _blueprint {
         [%- IF s.paths.$path.$method.responses.$response.headers -%]
             [%- "\n\n    + Headers\n" -%]
             [%- FOREACH header IN s.paths.$path.$method.responses.$response.headers.keys.sort -%]
-        [%- "\n            " _ header %]: [% s.paths.$path.$method.responses.$response.headers.$header.type; "\n\n" -%]
+                [%- "\n            " _ header %]: [% s.paths.$path.$method.responses.$response.headers.$header.type; "\n\n" -%]
             [%- END -%]
-        [%- "    + Body" -%]
-        [%- body_padding = '    '; END -%]
+            [%- "    + Body" -%]
+            [%- body_padding = '    ' -%]
+        [%- ELSE -%]
+            [%- body_padding = '' -%]
+        [%- END -%]
         [%- IF s.paths.$path.$method.responses.$response.schema -%]
             [%- "\n\n        " _ body_padding; s.paths.$path.$method.responses.$response.schema.example  _ "\n\n" -%]
         [%- ELSE -%]
@@ -78,7 +103,7 @@ sub _blueprint {
 [%- END -%]
 
 [%- BLOCK request_section -%]
-    [%- IF s.paths.$path.$method.parameters.defined -%]
+    [%- IF s.paths.$path.$method.parameters.none_path_and_query_params -%]
         [%- "\n+ Request " -%]
         [%- IF s.paths.$path.$method.consumes -%]
             [%- %]([% s.paths.$path.$method.consumes.0 %])
@@ -89,19 +114,31 @@ sub _blueprint {
                 [%- END -%]
             [%- END -%]
         [%- END %]
-        [%- IF s.paths.$path.$method.parameters.0.schema; "\n\n" -%]
-            [%- "        " _ s.paths.$path.$method.parameters.0.schema.example; "\n" -%]
+        [%- FOREACH param IN s.paths.$path.$method.parameters -%]
+            [%- IF param.schema -%]
+                [%- "\n\n        " -%]
+                [%- param.schema.example; "\n" -%]
+                [%- LAST -%]
+            [%- END -%]
         [%- END -%]
     [%- END -%]
 [%- END -%]
 
 [%- BLOCK method_section -%]
-    [%- FOREACH method IN s.paths.$path.keys.sort -%]
-        [%- IF method == description_key; NEXT; END -%]
+    [%- FOREACH method IN s.paths.$path.sort_methods_by_group -%]
+        [%- IF method == api_blueprint; NEXT; END -%]
         [%- summary = s.paths.$path.$method.summary -%]
-            [%- PROCESS action_section -%]
+        [%- PROCESS action_section -%]
         [%- IF s.paths.$path.$method.description.defined -%]
             [%- s.paths.$path.$method.description -%]
+        [%- END -%]
+        [%- FOREACH param IN s.paths.$path.$method.parameters.path_and_query_params -%]
+            [%- IF loop.first; "\n+ Parameters\n\n"; END -%]
+            [%- example = 'x-example' -%]
+            [%- %]    + [% param.name %]: [% param.$example %] ([% param.type %][% IF NOT param.required; ', optional'; END %]) - [% param.description %][% "\n" -%]
+            [%- IF param.default.defined -%]
+            [%- %]        + Default: `[% param.default %]`[% "\n" -%]
+            [%- END -%]
         [%- END -%]
         [%- PROCESS request_section -%]
         [%- PROCESS response_section -%]
@@ -113,23 +150,25 @@ FORMAT: 1A
 [% s.info.description -%]
 
 [% FOREACH path IN s.paths.keys.sort -%]
-    [%- description_key = 'x-api-blueprint' -%]
-    [%- IF s.paths.$path.$description_key.defined -%]
-        [%- summary = s.paths.$path.$description_key.summary -%]
-        [%- group = s.paths.$path.$description_key.group -%]
+    [%- api_blueprint = 'x-api-blueprint' -%]
+    [%- IF s.paths.$path.$api_blueprint.defined -%]
+        [%- summary = s.paths.$path.$api_blueprint.summary -%]
+        [%- group = s.paths.$path.$api_blueprint.group -%]
         [%- IF group -%]
             [%- "\n" IF NOT loop.first -%]
-            [%- "# Group " _ group _ "\n" -%]
-            [%- s.paths.$path.$description_key.description -%]
-            [%- IF s.paths.$path.keys.size == 1; NEXT; ELSE; "\n"; END -%]
+            [%- IF group != s.paths.${ loop.prev }.$api_blueprint.group -%]
+                [%- "# Group " _ group _ "\n" -%]
+                [%- s.paths.$path.$api_blueprint.description -%]
+                [%- IF s.paths.$path.keys.size == 1; NEXT; ELSE; "\n"; END -%]
+            [%- END -%]
         [%- END -%]
     [%- END -%]
     [%- PROCESS resource_section -%]
-    [%- IF s.paths.$path.$description_key.defined -%]
+    [%- IF s.paths.$path.$api_blueprint.defined -%]
         [%- IF group -%]
-            [%- "\n" -%]
+            [%- s.paths.$path.$api_blueprint.group_description _ "\n" -%]
         [%- ELSE -%]
-            [%- s.paths.$path.$description_key.description _ "\n" -%]
+            [%- s.paths.$path.$api_blueprint.description _ "\n" -%]
         [%- END -%]
     [%- END -%]
     [%- PROCESS method_section -%]
