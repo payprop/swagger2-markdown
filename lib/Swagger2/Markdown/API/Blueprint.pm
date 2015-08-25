@@ -1,5 +1,17 @@
 package Swagger2::Markdown::API::Blueprint;
 
+use strict;
+use warnings;
+
+use Template::Stash;
+
+# define list method to return new list of odd numbers only
+$Template::Stash::LIST_OPS->{ request_headers } = sub {
+    my $list = shift;
+    my $headers = [ grep { $_->{in} eq 'header' } @$list ];
+    return @{ $headers } ? $headers : undef;
+};
+
 sub template {
     my ( $args ) = @_;
 
@@ -54,60 +66,58 @@ FORMAT: 1A
         [%- summary = s.paths.$path.$description_key.summary -%]
         [%- group = s.paths.$path.$description_key.group -%]
         [%- IF group -%]
-[%- "\n" IF NOT loop.first -%]
-# Group [% group %]
-[% s.paths.$path.$description_key.description %]
-        [%- IF s.paths.$path.keys.size == 1; NEXT; ELSE; "\n"; END -%]
+            [%- "\n" IF NOT loop.first -%]
+            [%- "# Group " _ group _ "\n" -%]
+            [%- s.paths.$path.$description_key.description -%]
+            [%- IF s.paths.$path.keys.size == 1; NEXT; ELSE; "\n"; END -%]
         [%- END -%]
     [%- END -%]
-[% PROCESS resource_section %]
+    [%- PROCESS resource_section -%]
     [%- IF s.paths.$path.$description_key.defined -%]
         [%- IF group -%]
             [%- "\n" -%]
         [%- ELSE -%]
-[% s.paths.$path.$description_key.description _ "\n" -%]
+            [%- s.paths.$path.$description_key.description _ "\n" -%]
         [%- END -%]
     [%- END -%]
     [%- FOREACH method IN s.paths.$path.keys.sort -%]
         [%- IF method == description_key; NEXT; END -%]
         [%- summary = s.paths.$path.$method.summary -%]
-[% PROCESS action_section %]
+            [%- PROCESS action_section -%]
         [%- IF s.paths.$path.$method.description.defined -%]
-[% s.paths.$path.$method.description %]
+            [%- s.paths.$path.$method.description -%]
         [%- END -%]
         [%- IF s.paths.$path.$method.parameters.defined -%]
-
-+ Request [% -%]
+            [%- "\n+ Request " -%]
             [%- IF s.paths.$path.$method.consumes -%]
                 [%- %]([% s.paths.$path.$method.consumes.0 %])
+                [%- IF s.paths.$path.$method.parameters.request_headers -%]
+                    [%- "\n\n    + Headers" -%]
+                    [%- FOREACH header IN s.paths.$path.$method.parameters.request_headers -%]
+                        [%- "\n\n" %]            [% header.name %]: [% header.type %][% "\n" -%]
+                    [%- END -%]
+                [%- END -%]
             [%- END %]
-            [%- FOREACH parameter IN s.paths.$path.$method.parameters %]
-            [%- END %]
-
-        [% s.paths.$path.$method.parameters.0.schema.example %]
-
+            [%- IF s.paths.$path.$method.parameters.0.schema; "\n\n" -%]
+        [% s.paths.$path.$method.parameters.0.schema.example; "\n" -%]
+            [%- END -%]
         [%- END -%]
-        [%- FOREACH response IN s.paths.$path.$method.responses.keys.sort %]
-+ Response [% response -%]
+        [%- FOREACH response IN s.paths.$path.$method.responses.keys.sort -%]
+            [%- "\n+ Response " _ response -%]
             [%- IF s.paths.$path.$method.produces -%]
                 [%- %] ([% s.paths.$path.$method.produces.0 %])
             [%- END %]
-            [%- IF s.paths.$path.$method.responses.$response.headers %]
-
-    + Headers
-
-                [%- FOREACH header IN s.paths.$path.$method.responses.$response.headers.keys.sort %]
-            [% header %]: [% s.paths.$path.$method.responses.$response.headers.$header.example; "\n\n" -%]
+            [%- IF s.paths.$path.$method.responses.$response.headers -%]
+                [%- "\n\n    + Headers\n" -%]
+                [%- FOREACH header IN s.paths.$path.$method.responses.$response.headers.keys.sort -%]
+            [%- "\n            " _ header %]: [% s.paths.$path.$method.responses.$response.headers.$header.type; "\n\n" -%]
                 [%- END -%]
-    + Body
+            [%- "    + Body" -%]
             [%- body_padding = '    '; END -%]
-        [%- IF s.paths.$path.$method.responses.$response.schema %]
-
-        [% body_padding; s.paths.$path.$method.responses.$response.schema.example %]
-
-
-        [%- ELSE -%]
-        [%- "\n" -%]
+            [%- IF s.paths.$path.$method.responses.$response.schema -%]
+                [%- "\n\n        " _ body_padding; s.paths.$path.$method.responses.$response.schema.example  _ "\n\n" -%]
+            [%- ELSE -%]
+            [%- "\n" -%]
         [%- END -%]
         [%- END -%]
     [%- END -%]

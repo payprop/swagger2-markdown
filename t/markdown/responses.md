@@ -20,7 +20,7 @@ This action has **two** responses defined: One returing a plain text and the oth
 
     + Headers
 
-            X-My-Message-Header: 42
+            X-My-Message-Header: integer
 
     + Body
 

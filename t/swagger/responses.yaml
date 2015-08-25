@@ -36,7 +36,6 @@ paths:
             X-My-Message-Header:
               description: some header
               type: integer
-              example: 42
           schema:
             format: string
             example: "Hello World!"
