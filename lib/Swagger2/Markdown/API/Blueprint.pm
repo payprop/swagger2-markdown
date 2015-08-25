@@ -92,9 +92,18 @@ FORMAT: 1A
             [%- IF s.paths.$path.$method.produces -%]
                 [%- %] ([% s.paths.$path.$method.produces.0 %])
             [%- END %]
+            [%- IF s.paths.$path.$method.responses.$response.headers %]
+
+    + Headers
+
+                [%- FOREACH header IN s.paths.$path.$method.responses.$response.headers.keys.sort %]
+            [% header %]: [% s.paths.$path.$method.responses.$response.headers.$header.example; "\n\n" -%]
+                [%- END -%]
+    + Body
+            [%- body_padding = '    '; END -%]
         [%- IF s.paths.$path.$method.responses.$response.schema %]
 
-        [% s.paths.$path.$method.responses.$response.schema.example %]
+        [% body_padding; s.paths.$path.$method.responses.$response.schema.example %]
 
 
         [%- ELSE -%]

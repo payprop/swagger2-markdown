@@ -1,5 +1,10 @@
 examples sourced from:
 
-	https://github.com/apiaryio/api-blueprint/tree/master/examples
+    https://github.com/apiaryio/api-blueprint/tree/master/examples
 
-	http://apievangelist.com/2014/03/08/hello-world-product-api-with-blueprint-raml-and-swagger/
+note the examples are taken *exactly* as they were online, except for:
+
+    responses.md - swagger does not support multiple different reponse types
+                   per response code (either based on consumes or produces).
+                   this example has been slightly modified to match what can
+                   be acheived with swagger
