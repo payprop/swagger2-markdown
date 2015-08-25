@@ -70,7 +70,45 @@ has '_template' => (
 
 =head2 api_blueprint
 
-Returns a string of markdown in API Blueprint format
+Returns a string of markdown in API Blueprint format. Because API Blueprint is more
+of a documentation orientated approach there are some sections that it contains that
+are not present in the swagger2 spec. Refer to the API Blueprint specification for
+the following terms:
+
+    https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md
+
+You should add C<x-api-blueprint> sections to the swagger2 config to define which
+format of API Blueprint output you want and to add extra summary and method
+documentation. The main layout of the API Blueprint file is defined as so in the top
+level of the swagger config file (YAML example here with defaults shown):
+
+    x-api-blueprint:
+      resource_section: method_uri
+      action_section: method_uri
+
+Possible values for resource_section are:
+
+    uri             - # <URI template>
+    name_uri        - # <identifier> [<URI template>]
+    method_uri      - # <HTTP request method> <URI template>
+    name_method_uri - # <identifier> [<HTTP request method> <URI template>]
+
+Possible values for action_section are:
+
+    method          - ## <HTTP request method>
+    name_method     - ## <identifier> [<HTTP request method>]
+    name_method_uri - ## <identifier> [<HTTP request method> <URI template>]
+    method_uri      - # <HTTP request method> <URI template>
+
+For paths needing extra documentation you can add an C<x-api-blueprint> section to
+the path like so (again, YAML example here):
+
+    paths:
+      /message:
+        x-api-blueprint:
+          summary: My Message
+          description: |
+            A longer description here
 
 =cut
 

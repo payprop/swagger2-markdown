@@ -18,10 +18,11 @@ produces:
   - application/json
 paths:
   /message:
-    x-api-blueprint: |
-      This is our [resource](http://www.w3.org/TR/di-gloss/#def-resource). It is defined by its [URI](http://www.w3.org/TR/di-gloss/#def-uniform-resource-identifier) or, more precisely, by its [URI Template](http://tools.ietf.org/html/rfc6570).
+    x-api-blueprint:
+      description: |
+        This is our [resource](http://www.w3.org/TR/di-gloss/#def-resource). It is defined by its [URI](http://www.w3.org/TR/di-gloss/#def-uniform-resource-identifier) or, more precisely, by its [URI Template](http://tools.ietf.org/html/rfc6570).
 
-      This resource has no actions specified but we will fix that soon.
+        This resource has no actions specified but we will fix that soon.
     get:
       summary: Say hello to the world
       description: |
