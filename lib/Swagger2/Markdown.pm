@@ -145,7 +145,7 @@ sub api_blueprint {
         Swagger2::Markdown::API::Blueprint->template,
         {
             f => delete( $self->swagger2->tree->data->{'x-api-blueprint'} ),
-            s => $self->swagger2->tree->data,
+            s => $self->swagger2->expand->tree->data,
         },
         \$output,
     ) || die $self->_template->error;

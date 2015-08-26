@@ -12,3 +12,6 @@ note the examples are taken *exactly* as they were online, except for:
     requests.md  - as per response.md
 
     parameter.md - as per response.md
+
+    attributes.md - output attributes sorted (random nature of keys means that
+                    this test will sporadically fail if not sorted)

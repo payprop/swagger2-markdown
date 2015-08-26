@@ -102,6 +102,34 @@ sub _blueprint {
     END;
 -%]
 
+[%-
+    BLOCK parameters;
+        FOREACH param IN params;
+            IF loop.first;
+                "\n+ Parameters\n\n";
+            END;
+            example = 'x-example';
+            "    + ${param.name}";
+            IF param.$example;
+                ": ${param.$example}";
+            END;
+            " (${param.type}";
+            IF NOT param.required; ', optional'; END;
+            ")";
+            IF param.description.match( '^\n' );
+                "\n\n        ";
+                param.description.remove( '^\n' );
+                "\n";
+            ELSE;
+                " - ${param.description}\n";
+            END;
+            IF param.default.defined;
+                "        + Default: `${param.default}`\n";
+            END;
+        END;
+    END;
+-%]
+
 [%- BLOCK response_section -%]
     [%- FOREACH response IN s.paths.$path.$method.responses.keys.sort -%]
         [%- "\n+ Response " _ response -%]
@@ -116,11 +144,13 @@ sub _blueprint {
                 "\n\n    + Attributes ("
                 _ s.paths.$path.$method.responses.$response.schema.type
                 _ ")\n";
-                INCLUDE attributes
-                    schema = s.paths.$path.$method.responses.$response.schema
-                    indent = "        ";
-                ;
-                "\n"
+                IF s.paths.$path.$method.responses.$response.schema.type == 'object';
+                    INCLUDE attributes
+                        schema = s.paths.$path.$method.responses.$response.schema
+                        indent = "        ";
+                    ;
+                    "\n";
+                END;
             -%]
         [%- END -%]
         [%- IF s.paths.$path.$method.responses.$response.headers -%]
@@ -137,7 +167,7 @@ sub _blueprint {
             [%- body = '' -%]
             [%- body_padding = '    ' -%]
         [%- END -%]
-        [%- IF s.paths.$path.$method.responses.$response.schema -%]
+        [%- IF s.paths.$path.$method.responses.$response.schema.example -%]
             [%-
                 body;
                 "\n\n";
@@ -167,9 +197,13 @@ sub _blueprint {
         [%- END %]
         [%- FOREACH param IN s.paths.$path.$method.parameters -%]
             [%- IF param.schema -%]
-                [%- "\n\n        " -%]
-                [%- param.schema.example; "\n" -%]
-                [%- LAST -%]
+                [%- IF param.schema.example -%]
+                    [%- "\n\n        " -%]
+                    [%- param.schema.example; "\n" -%]
+                    [%- LAST -%]
+                [%- ELSE -%]
+                    [%- "\n" -%]
+                [%- END -%]
             [%- END -%]
         [%- END -%]
     [%- END -%]
@@ -183,14 +217,9 @@ sub _blueprint {
         [%- IF s.paths.$path.$method.description.defined -%]
             [%- s.paths.$path.$method.description -%]
         [%- END -%]
-        [%- FOREACH param IN s.paths.$path.$method.parameters.path_and_query_params -%]
-            [%- IF loop.first; "\n+ Parameters\n\n"; END -%]
-            [%- example = 'x-example' -%]
-            [%- %]    + [% param.name %]: [% param.$example %] ([% param.type %][% IF NOT param.required; ', optional'; END %]) - [% param.description %][% "\n" -%]
-            [%- IF param.default.defined -%]
-            [%- %]        + Default: `[% param.default %]`[% "\n" -%]
-            [%- END -%]
-        [%- END -%]
+        [%- PROCESS parameters
+            params = s.paths.$path.$method.parameters.path_and_query_params
+        -%]
         [%- PROCESS request_section -%]
         [%- PROCESS response_section -%]
     [%- END -%]
