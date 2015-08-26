@@ -89,7 +89,8 @@ level of the swagger config file (YAML example here with defaults shown):
     x-api-blueprint:
       resource_section: method_uri
       action_section: method_uri
-      attributes: true
+      attributes: false
+      simple: false
 
 Possible values for resource_section are:
 
@@ -107,6 +108,9 @@ Possible values for action_section are:
 
 Possible values for C<attributes> are true and false - if true the Attributes section
 will be created in the API Blueprint output.
+
+Possible values for C<simple> are true and false - if true then only the resource
+section headers will be printed.
 
 For paths needing extra documentation you can add an C<x-api-blueprint> section to
 the path like so (again, YAML example here):
@@ -157,6 +161,12 @@ sub api_blueprint {
 
 See the tests in this distribution - for example t/swagger/foo.yaml will map
 to t/markdown.foo.md
+
+=head1 BUGS
+
+Certainly. This has only been tested against the example markdown files on
+the API Blueprint github repo, and for that i had to generated the swagger
+files by hand.
 
 =head1 AUTHOR
 

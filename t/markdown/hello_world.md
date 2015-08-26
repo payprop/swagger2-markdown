@@ -13,6 +13,7 @@ Also please keep in mind that every single example in this course is a **real AP
 + [Next: Resource and Actions](02.%20Resource%20and%20Actions.md)
 
 # GET /message
+
 + Response 200 (text/plain)
 
         Hello World!
