@@ -78,24 +78,75 @@ sub _blueprint {
     [%- END -%]
 [%- END -%]
 
+[%-
+    # TODO: recursion on properties that are not primitive types
+    BLOCK attributes;
+        example = "x-example";
+        h = schema.properties;
+        FOREACH property IN h.keys.sort;
+            "$indent+ $property";
+            IF h.$property.$example;
+                ": ${h.$property.$example}";
+            END;
+            " (${h.$property.type})";
+            IF h.$property.description;
+                IF h.$property.description.match( '^\n' );
+                    "\n\n$indent    ";
+                    h.$property.description.remove( '^\n' );
+                ELSE;
+                    " - ${h.$property.description}";
+                END;
+            END;
+            "\n";
+        END;
+    END;
+-%]
+
 [%- BLOCK response_section -%]
     [%- FOREACH response IN s.paths.$path.$method.responses.keys.sort -%]
         [%- "\n+ Response " _ response -%]
         [%- IF s.paths.$path.$method.produces -%]
             [%- %] ([% s.paths.$path.$method.produces.0 %])
         [%- END %]
+        [%- IF
+            f.attributes
+            AND s.paths.$path.$method.responses.$response.schema
+        -%]
+            [%-
+                "\n\n    + Attributes ("
+                _ s.paths.$path.$method.responses.$response.schema.type
+                _ ")\n";
+                INCLUDE attributes
+                    schema = s.paths.$path.$method.responses.$response.schema
+                    indent = "        ";
+                ;
+                "\n"
+            -%]
+        [%- END -%]
         [%- IF s.paths.$path.$method.responses.$response.headers -%]
             [%- "\n\n    + Headers\n" -%]
             [%- FOREACH header IN s.paths.$path.$method.responses.$response.headers.keys.sort -%]
-                [%- "\n            " _ header %]: [% s.paths.$path.$method.responses.$response.headers.$header.type; "\n\n" -%]
+                [%- "\n            " _ header %]: [% s.paths.$path.$method.responses.$response.headers.$header.type; -%]
             [%- END -%]
-            [%- "    + Body" -%]
-            [%- body_padding = '    ' -%]
+            [%- body = "\n\n    + Body" -%]
+            [%- body_padding = '        ' -%]
+        [%- ELSIF f.attributes -%]
+            [%- body = "    + Body" -%]
+            [%- body_padding = '        ' -%]
         [%- ELSE -%]
-            [%- body_padding = '' -%]
+            [%- body = '' -%]
+            [%- body_padding = '    ' -%]
         [%- END -%]
         [%- IF s.paths.$path.$method.responses.$response.schema -%]
-            [%- "\n\n        " _ body_padding; s.paths.$path.$method.responses.$response.schema.example  _ "\n\n" -%]
+            [%-
+                body;
+                "\n\n";
+                # indent correctly
+                s.paths.$path.$method.responses.$response.schema.example.replace(
+                    "(?m)^([ ])*",body_padding _ '    $1'
+                );
+                "\n\n"
+            -%]
         [%- ELSE -%]
             [%- "\n" -%]
         [%- END -%]
@@ -173,6 +224,7 @@ FORMAT: 1A
     [%- END -%]
     [%- PROCESS method_section -%]
 [%- END -%]
+[%-# USE Dumper; Dumper.dump( f ) -%]
 [%-# USE Dumper; Dumper.dump( s.paths ) -%]
 EndOfBlueprint
 

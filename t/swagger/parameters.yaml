@@ -110,18 +110,18 @@ paths:
                 type: string
             example: |
               [
-                        {
-                          "id": 1,
-                          "message": "Hello World!"
-                        },
-                        {
-                          "id": 2,
-                          "message": "Time is an illusion. Lunchtime doubly so."
-                        },
-                        {
-                          "id": 3,
-                          "message": "So long, and thanks for all the fish."
-                        }
-                      ]
+                {
+                  "id": 1,
+                  "message": "Hello World!"
+                },
+                {
+                  "id": 2,
+                  "message": "Time is an illusion. Lunchtime doubly so."
+                },
+                {
+                  "id": 3,
+                  "message": "So long, and thanks for all the fish."
+                }
+              ]
 
 # vim: ts=2:sw=2:et

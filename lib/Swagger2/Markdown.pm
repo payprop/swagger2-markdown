@@ -15,8 +15,10 @@ Swagger2::Markdown - convert a Swagger2 spec to various markdown formats
 =head1 DESCRIPTION
 
 This module allows you to convert a swagger specification file to API Blueprint
-markdown (and possibly others). Note that this module is EXPERIMENTAL and a work
-in progress.
+markdown (and possibly others).
+
+Note that this module is EXPERIMENTAL and a work in progress. You may also need
+to add C<x-> values to your swagger config file to get better markdown output.
 
 =head1 SYNOPSIS
 
@@ -68,6 +70,8 @@ has '_template' => (
     },
 );
 
+=head1 METHODS
+
 =head2 api_blueprint
 
 Returns a string of markdown in API Blueprint format. Because API Blueprint is more
@@ -85,6 +89,7 @@ level of the swagger config file (YAML example here with defaults shown):
     x-api-blueprint:
       resource_section: method_uri
       action_section: method_uri
+      attributes: true
 
 Possible values for resource_section are:
 
@@ -99,6 +104,9 @@ Possible values for action_section are:
     name_method     - ## <identifier> [<HTTP request method>]
     name_method_uri - ## <identifier> [<HTTP request method> <URI template>]
     method_uri      - # <HTTP request method> <URI template>
+
+Possible values for C<attributes> are true and false - if true the Attributes section
+will be created in the API Blueprint output.
 
 For paths needing extra documentation you can add an C<x-api-blueprint> section to
 the path like so (again, YAML example here):
@@ -144,6 +152,11 @@ sub api_blueprint {
 
     return $output;
 }
+
+=head1 EXAMPLES
+
+See the tests in this distribution - for example t/swagger/foo.yaml will map
+to t/markdown.foo.md
 
 =head1 AUTHOR
 

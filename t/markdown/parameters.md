@@ -66,18 +66,18 @@ We have added the query URI template parameter - `limit`. This parameter is used
 + Response 200 (application/json)
 
         [
-          {
-            "id": 1,
-            "message": "Hello World!"
-          },
-          {
-            "id": 2,
-            "message": "Time is an illusion. Lunchtime doubly so."
-          },
-          {
-            "id": 3,
-            "message": "So long, and thanks for all the fish."
-          }
+         {
+         "id": 1,
+         "message": "Hello World!"
+         },
+         {
+         "id": 2,
+         "message": "Time is an illusion. Lunchtime doubly so."
+         },
+         {
+         "id": 3,
+         "message": "So long, and thanks for all the fish."
+         }
         ]
 
 
