@@ -77,9 +77,7 @@ has '_template' => (
 Returns a string of markdown in API Blueprint format. Because API Blueprint is more
 of a documentation orientated approach there are some sections that it contains that
 are not present in the swagger2 spec. Refer to the API Blueprint specification for
-the following terms:
-
-    https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md
+the following terms: L<https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md>
 
 You should add C<x-api-blueprint> sections to the swagger2 config to define which
 format of API Blueprint output you want and to add extra summary and method
