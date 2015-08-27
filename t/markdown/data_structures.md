@@ -39,6 +39,7 @@ Creates a new Coupon.
     + Attributes (Coupon)
 
 
+
 ## Coupon [/coupons/{id}]
 A coupon contains information about a percent-off or amount-off discount you might want to apply to a customer.
 
@@ -55,6 +56,7 @@ Retrieves the coupon with the given ID.
 + Response 200 (application/json)
 
     + Attributes (Coupon)
+
 
 # Data Structures
 

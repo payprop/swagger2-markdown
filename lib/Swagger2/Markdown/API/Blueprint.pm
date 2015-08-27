@@ -98,6 +98,8 @@ sub _blueprint {
                 ELSE;
                     schema.type;
                 END;
+            ELSE;
+                schema.type;
             END;
         ELSE;
             schema.type;
@@ -106,7 +108,6 @@ sub _blueprint {
 -%]
 
 [%-
-    # TODO: recursion on properties that are not primitive types
     BLOCK definition;
         example = "x-example";
         h = schema.properties;
@@ -115,7 +116,14 @@ sub _blueprint {
             IF h.$property.$example;
                 ": ${h.$property.$example}";
             END;
-            " (${h.$property.type})";
+            ref_key = '$ref';
+
+            " (";
+            INCLUDE definition_type
+                schema = h.$property
+                ref = h.$property;
+            ")";
+
             IF h.$property.description;
                 IF h.$property.description.match( '^\n' );
                     "\n\n$indent    ";
@@ -125,6 +133,13 @@ sub _blueprint {
                 END;
             END;
             "\n";
+            # recursion
+            IF h.$property.type == 'object';
+                INCLUDE definition
+                    schema = h.$property
+                    indent = "$indent    "
+                ;
+            END;
         END;
     END;
 -%]
@@ -162,6 +177,8 @@ sub _blueprint {
         [%- "\n+ Response " _ response -%]
         [%- IF e.paths.$path.$method.produces -%]
             [%- %] ([% e.paths.$path.$method.produces.0 %])
+        [%- ELSIF e.produces -%]
+            [%- %] ([% e.produces.0 %])
         [%- END %]
         [%- IF
             o.attributes
@@ -170,13 +187,21 @@ sub _blueprint {
             [%-
                 "\n\n    + Attributes (";
 
-INCLUDE definition_type
-    schema = e.paths.$path.$method.responses.$response.schema
-    ref = c.paths.$path.$method.responses.$response.schema
-;
+                INCLUDE definition_type
+                    schema = e.paths.$path.$method.responses.$response.schema
+                    ref = c.paths.$path.$method.responses.$response.schema
+                ;
+
                 ")\n";
+
                 IF e.paths.$path.$method.responses.$response.schema.type == 'object';
-                    IF NOT o.data_structures;
+                    IF o.data_structures;
+                        INCLUDE definition
+                            schema = c.paths.$path.$method.responses.$response.schema
+                            indent = "        ";
+                        ;
+                        "\n";
+                    ELSE;
                         INCLUDE definition
                             schema = e.paths.$path.$method.responses.$response.schema
                             indent = "        ";
@@ -292,7 +317,7 @@ FORMAT: 1A
 [%- END -%]
 [%- IF o.data_structures -%]
     [%- "# Data Structures\n\n" -%]
-    [%- FOREACH definition IN c.definitions.keys -%]
+    [%- FOREACH definition IN c.definitions.keys.sort -%]
         [%-
             "## " _ definition;
             " (";

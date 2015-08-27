@@ -17,8 +17,6 @@ info:
     + [This: Raw API Blueprint](https://raw.github.com/apiaryio/api-blueprint/master/examples/08.%20Attributes.md)
     + [Next: Advanced Attributes](09.%20Advanced%20Attributes.md)
 
-produces:
-  - application/json
 paths:
   /coupons/{id}:
     x-api-blueprint:

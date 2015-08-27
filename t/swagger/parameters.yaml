@@ -16,8 +16,6 @@ info:
     + [This: Raw API Blueprint](https://raw.github.com/apiaryio/api-blueprint/master/examples/07.%20Parameters.md)
     + [Next: Attributes](08.%20Attributes.md)
 
-produces:
-  - application/json
 paths:
   /message/{id}:
     x-api-blueprint:

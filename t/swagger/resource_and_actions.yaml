@@ -14,8 +14,6 @@ info:
     + [This: Raw API Blueprint](https://raw.github.com/apiaryio/api-blueprint/master/examples/02.%20Resource%20and%20Actions.md)
     + [Next: Named Resource and Actions](03.%20Named%20Resource%20and%20Actions.md)
 
-produces:
-  - application/json
 paths:
   /message:
     x-api-blueprint:

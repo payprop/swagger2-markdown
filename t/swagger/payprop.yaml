@@ -3,6 +3,7 @@ x-api-blueprint:
   resource_section: name_uri
   action_section: name_method
   attributes: true
+  data_structures: true
 swagger: '2.0'
 info:
     title: PayProp API Version 1.0
@@ -114,7 +115,7 @@ paths:
                         type: object
                         properties:
                             items:
-                                description: List of agencies
+                                description: List of Agency objects
                                 type: array
                                 items:
                                     $ref: '#/definitions/Agency'
@@ -146,7 +147,7 @@ paths:
                         type: object
                         properties:
                             items:
-                                description: List of agencies
+                                description: List of Agency objects
                                 type: array
                                 items:
                                     $ref: '#/definitions/Agency'
@@ -312,11 +313,14 @@ definitions:
             id:
                 type: string
                 description: ID of the PayProp user.
+                x-example: jfdks03w
             full_name:
                 type: string
                 description: Full name of the PayProp user.
+                x-example: John Smith
             email_address:
                 type: string
                 description: Email address of the PayProp user
+                x-example: foo@bar.com
     Error:
         type: string
