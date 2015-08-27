@@ -24,6 +24,7 @@ WriteMakefile(
         'File::Slurper'         => '0.006',
         'Test::More'            => '0',
         'Test::LongString'      => '0.17',
+        'YAML::XS'              => '0.59',
     },
     META_MERGE => {
         resources => {
