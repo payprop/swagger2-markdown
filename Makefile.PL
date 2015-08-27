@@ -12,6 +12,9 @@ WriteMakefile(
     VERSION_FROM  => 'lib/Swagger2/Markdown.pm',
     AUTHOR        => 'Lee Johnson <leejo@cpan.org>',
     LICENSE       => 'perl',
+    EXE_FILES     => [
+        "bin/swagger2apiblueprint"
+    ],
     PREREQ_PM => {
         'Moo'             => '2.000001',
         'Types::Standard' => '1.000005',
