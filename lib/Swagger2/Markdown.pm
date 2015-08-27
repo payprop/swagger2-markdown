@@ -91,6 +91,7 @@ level of the swagger config file (YAML example here with defaults shown):
       action_section: method_uri
       attributes: false
       simple: false
+      data_structures: false
 
 Possible values for resource_section are:
 
@@ -106,11 +107,16 @@ Possible values for action_section are:
     name_method_uri - ## <identifier> [<HTTP request method> <URI template>]
     method_uri      - # <HTTP request method> <URI template>
 
-Possible values for C<attributes> are true and false - if true the Attributes section
-will be created in the API Blueprint output.
+Possible values for C<attributes> are true and false - if true the Attributes
+sections will be created in the API Blueprint output.
 
 Possible values for C<simple> are true and false - if true then only the resource
 section headers will be printed.
+
+Possible values for C<data_structures> are true and false - if true then only a
+Data Structures section will be output to show definitions, and those request or
+response parameters that reference those (using C<$ref>) will also reference the
+Data Structures section.
 
 For paths needing extra documentation you can add an C<x-api-blueprint> section to
 the path like so (again, YAML example here):
@@ -148,8 +154,14 @@ sub api_blueprint {
     $self->_template->process(
         Swagger2::Markdown::API::Blueprint->template,
         {
-            f => delete( $self->swagger2->tree->data->{'x-api-blueprint'} ),
-            s => $self->swagger2->expand->tree->data,
+            # api blueprint output config
+            o => $self->swagger2->tree->data->{'x-api-blueprint'},
+            # expanded
+            e => $self->swagger2->expand->tree->data,
+            # compacted
+            c => $self->swagger2->tree->data,
+            # definitions
+            d => $self->swagger2->tree->data->{definitions},
         },
         \$output,
     ) || die $self->_template->error;
@@ -165,7 +177,7 @@ to t/markdown.foo.md
 =head1 BUGS
 
 Certainly. This has only been tested against the example markdown files on
-the API Blueprint github repo, and for that i had to generated the swagger
+the API Blueprint github repo, and for that i had to generate the swagger
 files by hand.
 
 =head1 AUTHOR

@@ -48,39 +48,66 @@ sub template {
 sub _blueprint {
 
     return << 'EndOfBlueprint';
+[%-
+    USE Dumper;
+-%]
+
 [%- BLOCK resource_section -%]
     [%- IF group; prefix = '##'; ELSE; prefix = '#'; END -%]
-    [%- SWITCH f.resource_section -%]
+    [%- SWITCH o.resource_section -%]
         [%- CASE 'uri' -%]
 [% prefix %] [% path _ "\n" -%]
         [%- CASE 'name_uri' -%]
-[% prefix %] [% summary %] [[% s.basePath _ path -%]][% "\n" -%]
+[% prefix %] [% summary %] [[% e.basePath _ path -%]][% "\n" -%]
         [%- CASE 'method_uri' -%]
-[% prefix %] [% method | upper %] [% s.basePath _ path -%][% "\n" -%]
+[% prefix %] [% method | upper %] [% e.basePath _ path -%][% "\n" -%]
         [%- CASE 'name_method_uri' -%]
-[% prefix %] [% summary %] [[% method | upper %] [% s.basePath _ path -%]][% "\n" -%]
+[% prefix %] [% summary %] [[% method | upper %] [% e.basePath _ path -%]][% "\n" -%]
         [%- CASE -%]
-[% IF method.defined %][% prefix %] [% method | upper %] [% s.basePath _ path %][% "\n" %][% END -%]
+[% IF method.defined %][% prefix %] [% method | upper %] [% e.basePath _ path %][% "\n" %][% END -%]
     [%- END -%]
 [%- END -%]
 
 [%- BLOCK action_section -%]
     [%- IF group; prefix = '###'; ELSE; prefix = '##'; END -%]
-    [%- SWITCH f.action_section -%]
+    [%- SWITCH o.action_section -%]
         [%- CASE 'method' -%]
 [% prefix %] [% method | upper; "\n" -%]
         [%- CASE 'name_method' -%]
 [% prefix %] [% summary %] [[% method | upper -%]][% "\n" -%]
         [%- CASE 'name_method_uri' -%]
-[% prefix %] [% summary %] [[% method | upper %] [% s.basePath _ path %]][% "\n" -%]
+[% prefix %] [% summary %] [[% method | upper %] [% e.basePath _ path %]][% "\n" -%]
         [%- CASE -%]
-[% IF method.defined %][% prefix %] [% method | upper %] [% s.basePath _ path %][% "\n" %][% END -%]
+[% IF method.defined %][% prefix %] [% method | upper %] [% e.basePath _ path %][% "\n" %][% END -%]
     [%- END -%]
 [%- END -%]
 
 [%-
+    BLOCK definition_type;
+        IF o.data_structures;
+            IF schema.type == 'array';
+                'array';
+                FOREACH item IN ref.items;
+                    '[' _ item.value.split( "/" ).-1 _ ']';
+                END;
+            ELSIF schema.type == 'object';
+                ref_key = '$ref';
+                IF ref.$ref_key;
+                    definition = ref.$ref_key;
+                    definition.split( "/" ).-1;
+                ELSE;
+                    schema.type;
+                END;
+            END;
+        ELSE;
+            schema.type;
+        END;
+    END;
+-%]
+
+[%-
     # TODO: recursion on properties that are not primitive types
-    BLOCK attributes;
+    BLOCK definition;
         example = "x-example";
         h = schema.properties;
         FOREACH property IN h.keys.sort;
@@ -131,48 +158,54 @@ sub _blueprint {
 -%]
 
 [%- BLOCK response_section -%]
-    [%- FOREACH response IN s.paths.$path.$method.responses.keys.sort -%]
+    [%- FOREACH response IN e.paths.$path.$method.responses.keys.sort -%]
         [%- "\n+ Response " _ response -%]
-        [%- IF s.paths.$path.$method.produces -%]
-            [%- %] ([% s.paths.$path.$method.produces.0 %])
+        [%- IF e.paths.$path.$method.produces -%]
+            [%- %] ([% e.paths.$path.$method.produces.0 %])
         [%- END %]
         [%- IF
-            f.attributes
-            AND s.paths.$path.$method.responses.$response.schema
+            o.attributes
+            AND e.paths.$path.$method.responses.$response.schema
         -%]
             [%-
-                "\n\n    + Attributes ("
-                _ s.paths.$path.$method.responses.$response.schema.type
-                _ ")\n";
-                IF s.paths.$path.$method.responses.$response.schema.type == 'object';
-                    INCLUDE attributes
-                        schema = s.paths.$path.$method.responses.$response.schema
-                        indent = "        ";
-                    ;
-                    "\n";
+                "\n\n    + Attributes (";
+
+INCLUDE definition_type
+    schema = e.paths.$path.$method.responses.$response.schema
+    ref = c.paths.$path.$method.responses.$response.schema
+;
+                ")\n";
+                IF e.paths.$path.$method.responses.$response.schema.type == 'object';
+                    IF NOT o.data_structures;
+                        INCLUDE definition
+                            schema = e.paths.$path.$method.responses.$response.schema
+                            indent = "        ";
+                        ;
+                        "\n";
+                    END;
                 END;
             -%]
         [%- END -%]
-        [%- IF s.paths.$path.$method.responses.$response.headers -%]
+        [%- IF e.paths.$path.$method.responses.$response.headers -%]
             [%- "\n\n    + Headers\n" -%]
-            [%- FOREACH header IN s.paths.$path.$method.responses.$response.headers.keys.sort -%]
-                [%- "\n            " _ header %]: [% s.paths.$path.$method.responses.$response.headers.$header.type; -%]
+            [%- FOREACH header IN e.paths.$path.$method.responses.$response.headers.keys.sort -%]
+                [%- "\n            " _ header %]: [% e.paths.$path.$method.responses.$response.headers.$header.type; -%]
             [%- END -%]
             [%- body = "\n\n    + Body" -%]
             [%- body_padding = '        ' -%]
-        [%- ELSIF f.attributes -%]
+        [%- ELSIF o.attributes -%]
             [%- body = "    + Body" -%]
             [%- body_padding = '        ' -%]
         [%- ELSE -%]
             [%- body = '' -%]
             [%- body_padding = '    ' -%]
         [%- END -%]
-        [%- IF s.paths.$path.$method.responses.$response.schema.example -%]
+        [%- IF e.paths.$path.$method.responses.$response.schema.example -%]
             [%-
                 body;
                 "\n\n";
                 # indent correctly
-                s.paths.$path.$method.responses.$response.schema.example.replace(
+                e.paths.$path.$method.responses.$response.schema.example.replace(
                     "(?m)^([ ])*",body_padding _ '    $1'
                 );
                 "\n\n"
@@ -184,18 +217,18 @@ sub _blueprint {
 [%- END -%]
 
 [%- BLOCK request_section -%]
-    [%- IF s.paths.$path.$method.parameters.none_path_and_query_params -%]
+    [%- IF e.paths.$path.$method.parameters.none_path_and_query_params -%]
         [%- "\n+ Request " -%]
-        [%- IF s.paths.$path.$method.consumes -%]
-            [%- %]([% s.paths.$path.$method.consumes.0 %])
-            [%- IF s.paths.$path.$method.parameters.request_headers -%]
+        [%- IF e.paths.$path.$method.consumes -%]
+            [%- %]([% e.paths.$path.$method.consumes.0 %])
+            [%- IF e.paths.$path.$method.parameters.request_headers -%]
                 [%- "\n\n    + Headers" -%]
-                [%- FOREACH header IN s.paths.$path.$method.parameters.request_headers -%]
+                [%- FOREACH header IN e.paths.$path.$method.parameters.request_headers -%]
                     [%- "\n\n" %]            [% header.name %]: [% header.type %][% "\n" -%]
                 [%- END -%]
             [%- END -%]
         [%- END %]
-        [%- FOREACH param IN s.paths.$path.$method.parameters -%]
+        [%- FOREACH param IN e.paths.$path.$method.parameters -%]
             [%- IF param.schema -%]
                 [%- IF param.schema.example -%]
                     [%- "\n\n        " -%]
@@ -210,19 +243,19 @@ sub _blueprint {
 [%- END -%]
 
 [%- BLOCK method_section -%]
-    [%- FOREACH method IN s.paths.$path.sort_methods_by_group -%]
+    [%- FOREACH method IN e.paths.$path.sort_methods_by_group -%]
         [%- IF method == api_blueprint; NEXT; END -%]
-        [%- summary = s.paths.$path.$method.summary -%]
-        [%- IF f.simple -%]
+        [%- summary = e.paths.$path.$method.summary -%]
+        [%- IF o.simple -%]
             [%- PROCESS resource_section -%]
         [%- ELSE -%]
             [%- PROCESS action_section -%]
         [%- END -%]
-        [%- IF s.paths.$path.$method.description.defined -%]
-            [%- s.paths.$path.$method.description -%]
+        [%- IF e.paths.$path.$method.description.defined -%]
+            [%- e.paths.$path.$method.description -%]
         [%- END -%]
         [%- PROCESS parameters
-            params = s.paths.$path.$method.parameters.path_and_query_params
+            params = e.paths.$path.$method.parameters.path_and_query_params
         -%]
         [%- PROCESS request_section -%]
         [%- PROCESS response_section -%]
@@ -230,35 +263,58 @@ sub _blueprint {
 [%- END -%]
 FORMAT: 1A
 
-# [% s.info.title %]
-[% s.info.description -%]
+# [% e.info.title %]
+[% e.info.description -%]
 
-[% FOREACH path IN s.paths.keys.sort -%]
+[% FOREACH path IN e.paths.keys.sort -%]
     [%- api_blueprint = 'x-api-blueprint' -%]
-    [%- IF s.paths.$path.$api_blueprint.defined -%]
-        [%- summary = s.paths.$path.$api_blueprint.summary -%]
-        [%- group = s.paths.$path.$api_blueprint.group -%]
+    [%- IF e.paths.$path.$api_blueprint.defined -%]
+        [%- summary = e.paths.$path.$api_blueprint.summary -%]
+        [%- group = e.paths.$path.$api_blueprint.group -%]
         [%- IF group -%]
             [%- "\n" IF NOT loop.first -%]
-            [%- IF group != s.paths.${ loop.prev }.$api_blueprint.group -%]
+            [%- IF group != e.paths.${ loop.prev }.$api_blueprint.group -%]
                 [%- "# Group " _ group _ "\n" -%]
-                [%- s.paths.$path.$api_blueprint.description -%]
-                [%- IF s.paths.$path.keys.size == 1; NEXT; ELSE; "\n"; END -%]
+                [%- e.paths.$path.$api_blueprint.description -%]
+                [%- IF e.paths.$path.keys.size == 1; NEXT; ELSE; "\n"; END -%]
             [%- END -%]
         [%- END -%]
     [%- END -%]
     [%- PROCESS resource_section -%]
-    [%- IF s.paths.$path.$api_blueprint.defined -%]
+    [%- IF e.paths.$path.$api_blueprint.defined -%]
         [%- IF group -%]
-            [%- s.paths.$path.$api_blueprint.group_description _ "\n" -%]
+            [%- e.paths.$path.$api_blueprint.group_description _ "\n" -%]
         [%- ELSE -%]
-            [%- s.paths.$path.$api_blueprint.description _ "\n" -%]
+            [%- e.paths.$path.$api_blueprint.description _ "\n" -%]
         [%- END -%]
     [%- END -%]
     [%- PROCESS method_section -%]
 [%- END -%]
-[%-# USE Dumper; Dumper.dump( f ) -%]
-[%-# USE Dumper; Dumper.dump( s.paths ) -%]
+[%- IF o.data_structures -%]
+    [%- "# Data Structures\n\n" -%]
+    [%- FOREACH definition IN c.definitions.keys -%]
+        [%-
+            "## " _ definition;
+            " (";
+            INCLUDE definition_type
+                schema = c.definitions.$definition
+            ;
+            ")";
+            "\n"
+        -%]
+        [%- 
+            INCLUDE definition
+                schema = c.definitions.$definition
+                indent = "";
+            ;
+            "\n";
+        -%]
+    [%- END -%]
+[%- END -%]
+[%-# Dumper.dump( o ) -%]
+[%-# Dumper.dump( e ) -%]
+[%-# Dumper.dump( c ) -%]
+[%-# Dumper.dump( d ) -%]
 EndOfBlueprint
 
 }
