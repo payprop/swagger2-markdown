@@ -5,7 +5,6 @@ use warnings;
 
 use Template::Stash;
 
-# define list method to return new list of odd numbers only
 $Template::Stash::LIST_OPS->{ request_headers } = sub {
     my $list = shift;
     my $headers = [ grep { $_->{in} eq 'header' } @$list ];
