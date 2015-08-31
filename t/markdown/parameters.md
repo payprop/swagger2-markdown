@@ -21,7 +21,7 @@ Note the parameter name `id` is enclosed in curly brackets. We will discuss this
 
 + Parameters
 
-    + id: 1 (number) - An unique identifier of the message.
+    + id: `1` (number) - An unique identifier of the message.
 
 + Request (application/json)
 
@@ -43,7 +43,7 @@ Note the parameter name `id` is enclosed in curly brackets. We will discuss this
 
 + Parameters
 
-    + id: 1 (number) - An unique identifier of the message.
+    + id: `1` (number) - An unique identifier of the message.
 
 + Request (application/json)
 
@@ -60,7 +60,7 @@ We have added the query URI template parameter - `limit`. This parameter is used
 
 + Parameters
 
-    + limit: 3 (number, optional) - The maximum number of results to return.
+    + limit: `3` (number, optional) - The maximum number of results to return.
         + Default: `20`
 
 + Response 200 (application/json)

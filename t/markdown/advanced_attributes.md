@@ -41,9 +41,9 @@ Creates a new Coupon.
 + Response 200 (application/json)
 
     + Attributes (object)
-        + created: 1415203908 (number) - Time stamp
-        + id: 250FF (string)
-        + percent_off: 25 (number)
+        + created: `1415203908` (number) - Time stamp
+        + id: `250FF` (string)
+        + percent_off: `25` (number)
 
             A positive integer between 1 and 100 that represents the discount the coupon will apply.
 
@@ -67,9 +67,9 @@ Retrieves the coupon with the given ID.
 + Response 200 (application/json)
 
     + Attributes (object)
-        + created: 1415203908 (number) - Time stamp
-        + id: 250FF (string)
-        + percent_off: 25 (number)
+        + created: `1415203908` (number) - Time stamp
+        + id: `250FF` (string)
+        + percent_off: `25` (number)
 
             A positive integer between 1 and 100 that represents the discount the coupon will apply.
 

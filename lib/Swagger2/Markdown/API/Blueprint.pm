@@ -113,7 +113,7 @@ sub _blueprint {
         FOREACH property IN h.keys.sort;
             "$indent+ $property";
             IF h.$property.$example;
-                ": ${h.$property.$example}";
+                ": `${h.$property.$example}`";
             END;
             ref_key = '$ref';
 
@@ -152,7 +152,7 @@ sub _blueprint {
             example = 'x-example';
             "    + ${param.name}";
             IF param.$example;
-                ": ${param.$example}";
+                ": `${param.$example}`";
             END;
             " (${param.type}";
             IF NOT param.required; ', optional'; END;

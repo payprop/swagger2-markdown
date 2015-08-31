@@ -135,7 +135,7 @@ The response data will depend on the user type. When the user is linked to an Ag
 + user (User)
 
 ## User (object)
-+ email_address: foo@bar.com (string) - Email address of the PayProp user
-+ full_name: John Smith (string) - Full name of the PayProp user.
-+ id: jfdks03w (string) - ID of the PayProp user.
++ email_address: `foo@bar.com` (string) - Email address of the PayProp user
++ full_name: `John Smith` (string) - Full name of the PayProp user.
++ id: `jfdks03w` (string) - ID of the PayProp user.
 
