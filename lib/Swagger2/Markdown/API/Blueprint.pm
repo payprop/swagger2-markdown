@@ -112,8 +112,12 @@ sub _blueprint {
         h = schema.properties;
         FOREACH property IN h.keys.sort;
             "$indent+ $property";
-            IF h.$property.$example;
-                ": `${h.$property.$example}`";
+            IF h.$property.$example.defined;
+                IF h.$property.type == 'boolean';
+                    h.$property.$example ? ": true" : ": false";
+                ELSE;
+                    ": `${h.$property.$example}`";
+                END;
             END;
             ref_key = '$ref';
 
@@ -151,8 +155,12 @@ sub _blueprint {
             END;
             example = 'x-example';
             "    + ${param.name}";
-            IF param.$example;
-                ": `${param.$example}`";
+            IF param.$example.defined;
+                IF param.type == 'boolean';
+                    param.$example ? ": true" : ": false";
+                ELSE;
+                    ": `${param.$example}`";
+                END;
             END;
             " (${param.type}";
             IF NOT param.required; ', optional'; END;
@@ -165,7 +173,13 @@ sub _blueprint {
                 " - ${param.description}\n";
             END;
             IF param.default.defined;
-                "        + Default: `${param.default}`\n";
+                "        + Default: ";
+                IF param.type == 'boolean';
+                    param.default ? "true" : "false";
+                ELSE;
+                    "`${param.default}`";
+                END;
+                "\n";
             END;
         END;
     END;

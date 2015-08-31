@@ -1,4 +1,11 @@
 Revision history for Swagger2-Markdown
 
+0.03     2015-08-31
+        - Fix GH #2 - quote param/attribute examples
+        - Fix GH #3 - boolean examples show as true/false
+
+0.02     2015-08-24
+        - Add swagger2apiblueprint script
+
 0.01     2015-08-24
         - First release

@@ -40,6 +40,9 @@ WriteMakefile(
     test => {
         TESTS => 't/*.t',
     },
+    dist => {
+        PREOP => 'pod2markdown lib/Swagger2/Markdown.pm > README.md',
+    },
 );
 
 # vim: ts=4:sw=4:et

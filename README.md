@@ -10,7 +10,7 @@ Swagger2::Markdown - convert a Swagger2 spec to various markdown formats
 
 # VERSION
 
-0.01
+0.03
 
 # DESCRIPTION
 

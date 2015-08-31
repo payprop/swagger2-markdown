@@ -249,8 +249,10 @@ definitions:
                 properties:
                     email:
                         type: boolean
+                        x-example: true
                     sms:
                         type: boolean
+                        x-example: false
             payments:
                 type: object
                 properties:
