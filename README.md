@@ -10,7 +10,7 @@ Swagger2::Markdown - convert a Swagger2 spec to various markdown formats
 
 # VERSION
 
-0.03
+0.04
 
 # DESCRIPTION
 
@@ -43,6 +43,15 @@ to add `x-` values to your swagger config file to get better markdown output.
 The [Swagger2](https://metacpan.org/pod/Swagger2) object, required at instantiation
 
 # METHODS
+
+## markdown
+
+Returns a string of markdown using the [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown) parser - the pod string is
+retrieved from the ->pod method of [Swagger2](https://metacpan.org/pod/Swagger2). As the parser is [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown)
+you can pass in a hash of arguments that will be passed on to the [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown)
+instantiation call:
+
+    my $markdown = $s2md->markdown( %pod_markdown_opts );
 
 ## api\_blueprint
 
@@ -113,15 +122,6 @@ You can add examples to the parameters section of a method using `x-example`:
             - in: query
               ...
               x-example: 3
-
-## markdown
-
-Returns a string of markdown using the [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown) parser - the pod string is
-retrieved from the ->pod method of [Swagger2](https://metacpan.org/pod/Swagger2). As the parser is [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown)
-you can pass in a hash of arguments that will be passed on to the [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown)
-instantiation call:
-
-    my $markdown = $s2md->markdown( %pod_markdown_opts );
 
 # EXAMPLES
 

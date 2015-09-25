@@ -1,5 +1,8 @@
 Revision history for Swagger2-Markdown
 
+0.04     2015-09-25
+        - Add basic markdown output (GH #1)
+
 0.03     2015-08-31
         - Fix GH #2 - quote param/attribute examples
         - Fix GH #3 - boolean examples show as true/false
