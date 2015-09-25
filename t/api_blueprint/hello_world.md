@@ -1,13 +1,6 @@
-# NAME
+FORMAT: 1A
 
-The Simplest API
-
-# VERSION
-
-1.0
-
-# DESCRIPTION
-
+# The Simplest API
 This is one of the simplest APIs written in the **API Blueprint**.
 One plain resource combined with a method and that's it! We will explain what is going on in the next installment - [Resource and Actions](02.%20Resource%20and%20Actions.md).
 
@@ -19,35 +12,9 @@ Also please keep in mind that every single example in this course is a **real AP
 + [This: Raw API Blueprint](https://raw.github.com/apiaryio/api-blueprint/master/examples/01.%20Simplest%20API.md)
 + [Next: Resource and Actions](02.%20Resource%20and%20Actions.md)
 
-# BASEURL
+# GET /message
 
-No default URL is defined to this application.
++ Response 200 (text/plain)
 
-# RESOURCES
+        Hello World!
 
-## GET /message
-
-Say hello to the world
-
-### Resource URL
-
-    GET http://example.com/message
-
-### Parameters
-
-This resource takes no parameters.
-
-### Responses
-
-#### 200 - OK
-
-The response message
-
-    {
-      "example":     "format":   },
-
-# COPYRIGHT AND LICENSE
-
-Unknown author
-
-BSD - http://www.linfo.org/bsdlicense.html

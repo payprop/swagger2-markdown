@@ -15,7 +15,7 @@ Swagger2::Markdown - convert a Swagger2 spec to various markdown formats
 =head1 DESCRIPTION
 
 This module allows you to convert a swagger specification file to API Blueprint
-markdown (and possibly others).
+markdown and basic markdown.
 
 Note that this module is EXPERIMENTAL and a work in progress. You may also need
 to add C<x-> values to your swagger config file to get better markdown output.
@@ -34,6 +34,8 @@ to add C<x-> values to your swagger config file to get better markdown output.
 
     my $api_blueprint_string = $s2md->api_blueprint;
 
+    my $basic_markdown = $s2md->markdown( %pod_markdown_opts );
+
 =cut
 
 use strict;
@@ -43,6 +45,7 @@ use Moo;
 use Types::Standard qw/ :all /;
 use Template;
 use Swagger2::Markdown::API::Blueprint;
+use Pod::Markdown;
 
 our $VERSION = '0.03';
 
@@ -71,6 +74,45 @@ has '_template' => (
 );
 
 =head1 METHODS
+
+=cut
+
+=head2 markdown
+
+Returns a string of markdown using the L<Pod::Markdown> parser - the pod string is
+retrieved from the ->pod method of L<Swagger2>. As the parser is L<Pod::Markdown>
+you can pass in a hash of arguments that will be passed on to the L<Pod::Markdown>
+instantiation call:
+
+    my $markdown = $s2md->markdown( %pod_markdown_opts );
+
+=cut
+
+sub markdown {
+    my ( $self,%options ) = @_;
+
+    my $parser = Pod::Markdown->new(
+        match_encoding => 1,
+        %options
+    );
+
+    {
+        # Pod::Markdown will escape any markdown reserved chars, but since we can
+        # include markdown in the swagger config we *don't* want to do that. this
+        # hack stops Pod::Markdown escaping the reserved chars, since there isn't
+        # an option to prevent the module doing so
+        no warnings 'redefine';
+        *Pod::Markdown::_escape_inline_markdown = sub { return $_[1] };
+        *Pod::Markdown::_escape_paragraph_markdown = sub { return $_[1] };
+    }
+
+    $parser->output_string( \my $markdown );
+    $parser->parse_string_document(
+        $self->swagger2->pod->to_string
+    );
+
+    return $markdown;
+}
 
 =head2 api_blueprint
 
@@ -153,13 +195,13 @@ sub api_blueprint {
         Swagger2::Markdown::API::Blueprint->template,
         {
             # api blueprint output config
-            o => $self->swagger2->tree->data->{'x-api-blueprint'},
+            o => $self->swagger2->api_spec->data->{'x-api-blueprint'},
             # expanded
-            e => $self->swagger2->expand->tree->data,
+            e => $self->swagger2->expand->api_spec->data,
             # compacted
-            c => $self->swagger2->tree->data,
+            c => $self->swagger2->api_spec->data,
             # definitions
-            d => $self->swagger2->tree->data->{definitions},
+            d => $self->swagger2->api_spec->data->{definitions},
         },
         \$output,
     ) || die $self->_template->error;
@@ -170,7 +212,14 @@ sub api_blueprint {
 =head1 EXAMPLES
 
 See the tests in this distribution - for example t/swagger/foo.yaml will map
-to t/markdown.foo.md
+to t/markdown/foo.md when called with ->markdown and t/api_blueprint/foo.md
+when called with ->api_blueprint.
+
+=head1 SEE ALSO
+
+L<Swagger2>
+
+L<Pod::Markdown>
 
 =head1 BUGS
 

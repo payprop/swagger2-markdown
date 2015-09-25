@@ -22,12 +22,6 @@ info:
     + [Next: Data Structures](10.%20Data%20Structures.md)
 paths:
   /coupons/{id}:
-    x-api-blueprint:
-      group: Coupons
-      summary: Coupon
-      description:
-      group_description: |
-        A coupon contains information about a percent-off or amount-off discount you might want to apply to a customer.
     get:
       summary: Retrieve a Coupon
       description: |
@@ -39,9 +33,7 @@ paths:
       parameters:
         - in: path
           name: id
-          description: |
-
-            The ID of the desired coupon.
+          description: The ID of the desired coupon.
           type: string
           required: true
       responses:
@@ -50,15 +42,9 @@ paths:
           schema:
             $ref: "#/definitions/Coupon"
   /coupons:
-    x-api-blueprint:
-      group: Coupons
-      summary: Coupons
-      description: 
-      group_description:
     get:
       summary: List all Coupons
-      description: |
-        Returns a list of your coupons.
+      description: Returns a list of your coupons.
       consumes:
         - application/json
       produces:
@@ -66,9 +52,7 @@ paths:
       parameters:
         - in: query
           name: limit
-          description: |
-
-            A limit on the number of objects to be returned. Limit can range between 1 and 100 items.
+          description: A limit on the number of objects to be returned. Limit can range between 1 and 100 items.
           type: number
           default: 10
           required: false
@@ -81,8 +65,7 @@ paths:
               $ref: "#/definitions/Coupon"
     post:
       summary: Create a Coupon
-      description: |
-        Creates a new Coupon.
+      description: Creates a new Coupon.
       consumes:
         - application/json
       produces:
@@ -112,9 +95,7 @@ definitions:
       percent_off:
         type: number
         x-example: 25
-        description: |
-
-          A positive integer between 1 and 100 that represents the discount the coupon will apply.
+        description: A positive integer between 1 and 100 that represents the discount the coupon will apply.
       redeem_by:
         type: number
         description: Date after which the coupon can no longer be redeemed

@@ -55,9 +55,7 @@ The response message
       {
         "created": number, // Time stamp
         "id": string, // No description.
-        "percent_off": number, // 
-  A positive integer between 1 and 100 that represents the discount the coupon will apply.
-
+        "percent_off": number, // A positive integer between 1 and 100 that represents the discount the coupon will apply.
         "redeem_by": number, // Date after which the coupon can no longer be redeemed
       },
       ...
@@ -90,9 +88,7 @@ The response message
     {
       "created": number, // Time stamp
       "id": string, // No description.
-      "percent_off": number, // 
-  A positive integer between 1 and 100 that represents the discount the coupon will apply.
-
+      "percent_off": number, // A positive integer between 1 and 100 that represents the discount the coupon will apply.
       "redeem_by": number, // Date after which the coupon can no longer be redeemed
     },
 
@@ -119,9 +115,7 @@ Creates a new Coupon.
     {
       "created": number, // Time stamp
       "id": string, // No description.
-      "percent_off": number, // 
-  A positive integer between 1 and 100 that represents the discount the coupon will apply.
-
+      "percent_off": number, // A positive integer between 1 and 100 that represents the discount the coupon will apply.
       "redeem_by": number, // Date after which the coupon can no longer be redeemed
     },
 
@@ -134,39 +128,9 @@ The response message
     {
       "created": number, // Time stamp
       "id": string, // No description.
-      "percent_off": number, // 
-  A positive integer between 1 and 100 that represents the discount the coupon will apply.
-
+      "percent_off": number, // A positive integer between 1 and 100 that represents the discount the coupon will apply.
       "redeem_by": number, // Date after which the coupon can no longer be redeemed
     },
-
-## X-API-BLUEPRINT /coupons
-
-Coupons
-
-### Resource URL
-
-    X-API-BLUEPRINT http://example.com/coupons
-
-### Parameters
-
-This resource takes no parameters.
-
-### Responses
-
-## X-API-BLUEPRINT /coupons/{id}
-
-Coupon
-
-### Resource URL
-
-    X-API-BLUEPRINT http://example.com/coupons/{id}
-
-### Parameters
-
-This resource takes no parameters.
-
-### Responses
 
 # COPYRIGHT AND LICENSE
 

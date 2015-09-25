@@ -1,6 +1,13 @@
-FORMAT: 1A
+# NAME
 
-# Data Structures API
+Data Structures API
+
+# VERSION
+
+1.0
+
+# DESCRIPTION
+
 Following [Advanced Attributes](09.%20Advanced%20Attributes.md), this example demonstrates defining arbitrary data structure to be reused by various attribute descriptions.
 
 Since a portion of the `Coupon` data structure is shared between the `Coupon` definition itself and the `Create a Coupon` action, it was separated into a `Coupon Base` data structure in the `Data Structures` API Blueprint Section. Doing so enables us to reuse it as a base-type of other attribute definitions.
@@ -10,62 +17,155 @@ Since a portion of the `Coupon` data structure is shared between the `Coupon` de
 + [This: Raw API Blueprint](https://raw.github.com/apiaryio/api-blueprint/master/examples/10.%20Data%20Structures.md)
 + [Next: Resource Model](11.%20Resource%20Model.md)
 
-# Group Coupons
+# BASEURL
 
-## Coupons [/coupons]
+No default URL is defined to this application.
 
-### List all Coupons [GET]
+# RESOURCES
+
+## GET /coupons
+
+List all Coupons
+
 Returns a list of your coupons.
 
-+ Parameters
+### Resource URL
 
-    + limit (number, optional)
+    GET http://example.com/coupons
 
-        A limit on the number of objects to be returned. Limit can range between 1 and 100 items.
+### Parameters
 
-        + Default: `10`
+    .-------------------------------------------------------------------------------------------------------------------------------.
+    | Name  | In    | Type   | Required | Description                                                                               |
+    |-------------------------------------------------------------------------------------------------------------------------------|
+    | limit | query | number | No       | A limit on the number of objects to be returned. Limit can range between 1 and 100 items. |
+    '-------------------------------------------------------------------------------------------------------------------------------'
 
-+ Response 200 (application/json)
+### Responses
 
-    + Attributes (array[Coupon])
+#### 200 - OK
 
-### Create a Coupon [POST]
-Creates a new Coupon.
+The response message
 
-+ Request (application/json)
+    [
+      {
+        "created": number, // Time stamp
+        "id": string, // No description.
+        "percent_off": number, // 
+  A positive integer between 1 and 100 that represents the discount the coupon will apply.
 
-+ Response 200 (application/json)
+        "redeem_by": number, // Date after which the coupon can no longer be redeemed
+      },
+      ...
+    ]
 
-    + Attributes (Coupon)
+## GET /coupons/{id}
 
+Retrieve a Coupon
 
-
-## Coupon [/coupons/{id}]
-A coupon contains information about a percent-off or amount-off discount you might want to apply to a customer.
-
-### Retrieve a Coupon [GET]
 Retrieves the coupon with the given ID.
 
-+ Parameters
+### Resource URL
 
-    + id (string)
+    GET http://example.com/coupons/{id}
 
-        The ID of the desired coupon.
+### Parameters
 
+    .-----------------------------------------------------------------.
+    | Name | In   | Type   | Required | Description                   |
+    |-----------------------------------------------------------------|
+    | id   | path | string | Yes      | The ID of the desired coupon. |
+    '-----------------------------------------------------------------'
 
-+ Response 200 (application/json)
+### Responses
 
-    + Attributes (Coupon)
+#### 200 - OK
 
+The response message
 
-# Data Structures
+    {
+      "created": number, // Time stamp
+      "id": string, // No description.
+      "percent_off": number, // 
+  A positive integer between 1 and 100 that represents the discount the coupon will apply.
 
-## Coupon (object)
-+ created: `1415203908` (number) - Time stamp
-+ id: `250FF` (string)
-+ percent_off: `25` (number)
+      "redeem_by": number, // Date after which the coupon can no longer be redeemed
+    },
 
-    A positive integer between 1 and 100 that represents the discount the coupon will apply.
+## POST /coupons
 
-+ redeem_by (number) - Date after which the coupon can no longer be redeemed
+Create a Coupon
 
+Creates a new Coupon.
+
+### Resource URL
+
+    POST http://example.com/coupons
+
+### Parameters
+
+    .-----------------------------------------------------.
+    | Name   | In   | Type   | Required | Description     |
+    |-----------------------------------------------------|
+    | coupon | body | schema | Yes      | No description. |
+    '-----------------------------------------------------'
+
+    coupon:
+
+    {
+      "created": number, // Time stamp
+      "id": string, // No description.
+      "percent_off": number, // 
+  A positive integer between 1 and 100 that represents the discount the coupon will apply.
+
+      "redeem_by": number, // Date after which the coupon can no longer be redeemed
+    },
+
+### Responses
+
+#### 200 - OK
+
+The response message
+
+    {
+      "created": number, // Time stamp
+      "id": string, // No description.
+      "percent_off": number, // 
+  A positive integer between 1 and 100 that represents the discount the coupon will apply.
+
+      "redeem_by": number, // Date after which the coupon can no longer be redeemed
+    },
+
+## X-API-BLUEPRINT /coupons
+
+Coupons
+
+### Resource URL
+
+    X-API-BLUEPRINT http://example.com/coupons
+
+### Parameters
+
+This resource takes no parameters.
+
+### Responses
+
+## X-API-BLUEPRINT /coupons/{id}
+
+Coupon
+
+### Resource URL
+
+    X-API-BLUEPRINT http://example.com/coupons/{id}
+
+### Parameters
+
+This resource takes no parameters.
+
+### Responses
+
+# COPYRIGHT AND LICENSE
+
+Unknown author
+
+BSD - http://www.linfo.org/bsdlicense.html

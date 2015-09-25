@@ -1,6 +1,13 @@
-FORMAT: 1A
+# NAME
 
-# Named Resource and Actions API
+Named Resource and Actions API
+
+# VERSION
+
+1.0
+
+# DESCRIPTION
+
 This API example demonstrates how to name a resource and its actions, to give the reader a better idea about what the resource is used for.
 
 ## API Blueprint
@@ -8,21 +15,85 @@ This API example demonstrates how to name a resource and its actions, to give th
 + [This: Raw API Blueprint](https://raw.github.com/apiaryio/api-blueprint/master/examples/03.%20Named%20Resource%20and%20Actions.md)
 + [Next: Grouping Resources](04.%20Grouping%20Resources.md)
 
-# My Message [/message]
-OK, `My Message` probably isn't the best name for our resource but it will do for now. Note the URI `/message` is enclosed in square brackets.
+# BASEURL
 
-## Retrieve a Message [GET]
+No default URL is defined to this application.
+
+# RESOURCES
+
+## GET /message
+
+Retrieve a Message
+
 Now this is informative! No extra explanation needed here. This action clearly retrieves the message.
 
-+ Response 200 (text/plain)
+### Resource URL
 
-        Hello World!
+    GET http://example.com/message
 
-## Update a Message [PUT]
+### Parameters
+
+This resource takes no parameters.
+
+### Responses
+
+#### 200 - OK
+
+The response message
+
+    {
+      "example":     "format":   },
+
+## PUT /message
+
+Update a Message
+
 `Update a message` - nice and simple naming is the best way to go.
 
-+ Request (text/plain)
+### Resource URL
 
-        All your base are belong to us.
+    PUT http://example.com/message
 
-+ Response 204
+### Parameters
+
+    .------------------------------------------------------.
+    | Name    | In   | Type   | Required | Description     |
+    |------------------------------------------------------|
+    | message | body | schema | Yes      | No description. |
+    '------------------------------------------------------'
+
+    message:
+
+    {
+      "example":     "format":   },
+
+### Responses
+
+#### 204 - No Content
+
+The response message
+
+    {
+    },
+
+## X-API-BLUEPRINT /message
+
+My Message
+
+OK, `My Message` probably isn't the best name for our resource but it will do for now. Note the URI `/message` is enclosed in square brackets.
+
+### Resource URL
+
+    X-API-BLUEPRINT http://example.com/message
+
+### Parameters
+
+This resource takes no parameters.
+
+### Responses
+
+# COPYRIGHT AND LICENSE
+
+Unknown author
+
+BSD - http://www.linfo.org/bsdlicense.html

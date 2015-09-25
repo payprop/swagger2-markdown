@@ -20,27 +20,27 @@ find(
             if ( /\.md$/ ) {
                 my $swagger_file = $File::Find::name;
                 $swagger_file =~ s/\.md$/.yaml/;
-                $swagger_file =~ s/api_blueprint/swagger/;
+                $swagger_file =~ s/markdown/swagger/;
 
                 $files{ $File::Find::name } = $swagger_file;
             }
         },
         no_chdir => 1
     },
-    catfile( qw/ t api_blueprint / ),
+    catfile( qw/ t markdown / ),
 );
 
-plan skip_all => "No api_blueprint files?" if ! %files;
+plan skip_all => "No markdown files?" if ! %files;
 
-foreach my $api_blueprint_file ( sort keys %files ) {
+foreach my $markdown_file ( sort keys %files ) {
 
-    my $expected = read_text( $api_blueprint_file );
-    my $swagger  = Swagger2->new->load( $files{ $api_blueprint_file } );
+    my $expected = read_text( $markdown_file );
+    my $swagger  = Swagger2->new->load( $files{ $markdown_file } );
     my $s2md     = Swagger2::Markdown->new( swagger2 => $swagger );
 
-    my $got = $s2md->api_blueprint;
+    my $got = $s2md->markdown;
 
-    is_string( $got,$expected,$files{ $api_blueprint_file } )
+    is_string( $got,$expected,$files{ $markdown_file } )
         || note $got;
 }
 

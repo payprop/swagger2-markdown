@@ -15,7 +15,7 @@ Swagger2::Markdown - convert a Swagger2 spec to various markdown formats
 # DESCRIPTION
 
 This module allows you to convert a swagger specification file to API Blueprint
-markdown (and possibly others).
+markdown and basic markdown.
 
 Note that this module is EXPERIMENTAL and a work in progress. You may also need
 to add `x-` values to your swagger config file to get better markdown output.
@@ -33,6 +33,8 @@ to add `x-` values to your swagger config file to get better markdown output.
     );
 
     my $api_blueprint_string = $s2md->api_blueprint;
+
+    my $basic_markdown = $s2md->markdown( %pod_markdown_opts );
 
 # ATTRIBUTES
 
@@ -112,10 +114,26 @@ You can add examples to the parameters section of a method using `x-example`:
               ...
               x-example: 3
 
+## markdown
+
+Returns a string of markdown using the [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown) parser - the pod string is
+retrieved from the ->pod method of [Swagger2](https://metacpan.org/pod/Swagger2). As the parser is [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown)
+you can pass in a hash of arguments that will be passed on to the [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown)
+instantiation call:
+
+    my $markdown = $s2md->markdown( %pod_markdown_opts );
+
 # EXAMPLES
 
 See the tests in this distribution - for example t/swagger/foo.yaml will map
-to t/markdown.foo.md
+to t/markdown/foo.md when called with ->markdown and t/api\_blueprint/foo.md
+when called with ->api\_blueprint.
+
+# SEE ALSO
+
+[Swagger2](https://metacpan.org/pod/Swagger2)
+
+[Pod::Markdown](https://metacpan.org/pod/Pod::Markdown)
 
 # BUGS
 

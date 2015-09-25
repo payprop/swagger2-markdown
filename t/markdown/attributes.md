@@ -1,6 +1,13 @@
-FORMAT: 1A
+# NAME
 
-# Attributes API
+Attributes API
+
+# VERSION
+
+1.0
+
+# DESCRIPTION
+
 This API example demonstrates how to describe body attributes of a request or response message.
 
 In this case, the description is complementary (and duplicate!) to the provided JSON example in the body section. The [Advanced Attributes](09.%20Advanced%20Attributes.md) API example will demonstrate how to avoid duplicates and how to reuse attributes descriptions.
@@ -10,36 +17,61 @@ In this case, the description is complementary (and duplicate!) to the provided 
 + [This: Raw API Blueprint](https://raw.github.com/apiaryio/api-blueprint/master/examples/08.%20Attributes.md)
 + [Next: Advanced Attributes](09.%20Advanced%20Attributes.md)
 
-# Group Coupons
+# BASEURL
 
-## Coupon [/coupons/{id}]
-A coupon contains information about a percent-off or amount-off discount you might want to apply to a customer.
+No default URL is defined to this application.
 
-### Retrieve a Coupon [GET]
+# RESOURCES
+
+## GET /coupons/{id}
+
+Retrieve a Coupon
+
 Retrieves the coupon with the given ID.
 
-+ Parameters
+### Resource URL
 
-    + id: `1` (number) - An unique identifier of the coupon.
+    GET http://example.com/coupons/{id}
 
-+ Response 200 (application/json)
+### Parameters
 
-    + Attributes (object)
-        + created: `1415203908` (number) - Time stamp
-        + id: `250FF` (string)
-        + percent_off: `25` (number)
+    .-----------------------------------------------------------------------.
+    | Name | In   | Type   | Required | Description                         |
+    |-----------------------------------------------------------------------|
+    | id   | path | number | Yes      | An unique identifier of the coupon. |
+    '-----------------------------------------------------------------------'
 
-            A positive integer between 1 and 100 that represents the discount the coupon will apply.
+### Responses
 
-        + redeem_by (number) - Date after which the coupon can no longer be redeemed
+#### 200 - OK
 
-    + Body
+The response message
 
-            {
-             "id": "250FF",
-             "created": 1415203908,
-             "percent_off": 25,
-             "redeem_by:" null
-            }
+    {
+      "created": number, // Time stamp
+      "id": string, // No description.
+      "percent_off": number, // 
+  A positive integer between 1 and 100 that represents the discount the coupon will apply.
 
+      "redeem_by": number, // Date after which the coupon can no longer be redeemed
+    },
 
+## X-API-BLUEPRINT /coupons/{id}
+
+Coupon
+
+### Resource URL
+
+    X-API-BLUEPRINT http://example.com/coupons/{id}
+
+### Parameters
+
+This resource takes no parameters.
+
+### Responses
+
+# COPYRIGHT AND LICENSE
+
+Unknown author
+
+BSD - http://www.linfo.org/bsdlicense.html

@@ -1,83 +1,146 @@
-FORMAT: 1A
+# NAME
 
-# Parameters API
+Parameters API
+
+# VERSION
+
+1.0
+
+# DESCRIPTION
+
 In this installment of the API Blueprint course we will discuss how to describe URI parameters.
 
-But first let's add more messages to our system. For that we would need introduce an message identifier – id. This id will be our parameter when communicating with our API about messages.
+But first let's add more messages to our system. For that we would need introduce an message identifier - id. This id will be our parameter when communicating with our API about messages.
 
 ## API Blueprint
 + [Previous: Requests](06.%20Requests.md)
 + [This: Raw API Blueprint](https://raw.github.com/apiaryio/api-blueprint/master/examples/07.%20Parameters.md)
 + [Next: Attributes](08.%20Attributes.md)
 
-# Group Messages
+# BASEURL
+
+No default URL is defined to this application.
+
+# RESOURCES
+
+## GET /message/{id}
+
+Retrieve a Message
+
+### Resource URL
+
+    GET http://example.com/message/{id}
+
+### Parameters
+
+    .----------------------------------------------------------------------------.
+    | Name   | In     | Type   | Required | Description                          |
+    |----------------------------------------------------------------------------|
+    | id     | path   | number | Yes      | An unique identifier of the message. |
+    | Accept | header | string | No       | No description.                      |
+    '----------------------------------------------------------------------------'
+
+### Responses
+
+#### 200 - OK
+
+The response message
+
+    {
+      "message": string, // No description.
+    },
+
+## GET /messages
+
+Retrieve all Messages
+
+### Resource URL
+
+    GET http://example.com/messages
+
+### Parameters
+
+    .------------------------------------------------------------------------------.
+    | Name  | In    | Type   | Required | Description                              |
+    |------------------------------------------------------------------------------|
+    | limit | query | number | No       | The maximum number of results to return. |
+    '------------------------------------------------------------------------------'
+
+### Responses
+
+#### 200 - OK
+
+The response message
+
+    {
+      "message": string, // No description.
+    },
+
+## PUT /message/{id}
+
+Update a Message
+
+### Resource URL
+
+    PUT http://example.com/message/{id}
+
+### Parameters
+
+    .---------------------------------------------------------------------------.
+    | Name    | In   | Type   | Required | Description                          |
+    |---------------------------------------------------------------------------|
+    | id      | path | number | Yes      | An unique identifier of the message. |
+    | message | body | schema | Yes      | No description.                      |
+    '---------------------------------------------------------------------------'
+
+    message:
+
+    {
+      "example":     "format":   },
+
+### Responses
+
+#### 204 - No Content
+
+The response message
+
+    {
+    },
+
+## X-API-BLUEPRINT /message/{id}
+
+My Message
+
 Group of all messages-related resources.
 
-## My Message [/message/{id}]
-Here we have added the message `id` parameter as an [URI Template variable](http://tools.ietf.org/html/rfc6570) in the Message resource's URI.
-Note the parameter name `id` is enclosed in curly brackets. We will discuss this parameter in the `Parameters` section below, where we will also set its example value to `1` and declare it of an arbitrary 'number' type.
+### Resource URL
 
-### Retrieve a Message [GET]
+    X-API-BLUEPRINT http://example.com/message/{id}
 
-+ Parameters
+### Parameters
 
-    + id: `1` (number) - An unique identifier of the message.
+This resource takes no parameters.
 
-+ Request (application/json)
+### Responses
 
-    + Headers
+## X-API-BLUEPRINT /messages
 
-            Accept: string
+All My Messages
 
-+ Response 200 (application/json)
-
-    + Headers
-
-            X-My-Message-Header: integer
-
-    + Body
-
-            { "id": 1, "message": "Hello World!" }
-
-### Update a Message [PUT]
-
-+ Parameters
-
-    + id: `1` (number) - An unique identifier of the message.
-
-+ Request (application/json)
-
-        { "message": "All your base are belong to us." }
-
-+ Response 204
-
-## All My Messages [/messages]
 A resource representing all of my messages in the system.
 
-We have added the query URI template parameter - `limit`. This parameter is used for limiting the number of results returned by some actions on this resource. It does not affect every possible action of this resource therefore we will discuss it only at the particular action level below.
+### Resource URL
 
-### Retrieve all Messages [GET]
+    X-API-BLUEPRINT http://example.com/messages
 
-+ Parameters
+### Parameters
 
-    + limit: `3` (number, optional) - The maximum number of results to return.
-        + Default: `20`
+This resource takes no parameters.
 
-+ Response 200 (application/json)
+### Responses
 
-        [
-         {
-         "id": 1,
-         "message": "Hello World!"
-         },
-         {
-         "id": 2,
-         "message": "Time is an illusion. Lunchtime doubly so."
-         },
-         {
-         "id": 3,
-         "message": "So long, and thanks for all the fish."
-         }
-        ]
+# COPYRIGHT AND LICENSE
 
+Unknown author
 
+BSD - http://www.linfo.org/bsdlicense.html

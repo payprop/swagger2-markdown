@@ -13,12 +13,14 @@ WriteMakefile(
     AUTHOR        => 'Lee Johnson <leejo@cpan.org>',
     LICENSE       => 'perl',
     EXE_FILES     => [
-        "bin/swagger2apiblueprint"
+        "bin/swagger2apiblueprint",
+        "bin/swagger2markdown"
     ],
     PREREQ_PM => {
         'Moo'             => '2.000001',
         'Types::Standard' => '1.000005',
         'Template'        => '2.26',
+        'Pod::Markdown'   => '3.000',
     },
     BUILD_REQUIRES => {
         'Swagger2'              => '0.49',
