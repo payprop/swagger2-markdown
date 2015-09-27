@@ -1,5 +1,10 @@
 Revision history for Swagger2-Markdown
 
+0.05     2015-09-27
+        - Update min required version of Swagger2
+        - Move SYNOPSIS to before DESCRIPTION in pod
+        - Remove EXPERIMENTAL notice from pod
+
 0.04     2015-09-25
         - Add basic markdown output (GH #1)
 

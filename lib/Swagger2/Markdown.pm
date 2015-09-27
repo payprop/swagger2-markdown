@@ -10,15 +10,7 @@ Swagger2::Markdown - convert a Swagger2 spec to various markdown formats
 
 =head1 VERSION
 
-0.04
-
-=head1 DESCRIPTION
-
-This module allows you to convert a swagger specification file to API Blueprint
-markdown and basic markdown.
-
-Note that this module is EXPERIMENTAL and a work in progress. You may also need
-to add C<x-> values to your swagger config file to get better markdown output.
+0.05
 
 =head1 SYNOPSIS
 
@@ -32,9 +24,15 @@ to add C<x-> values to your swagger config file to get better markdown output.
         swagger2 => Swagger2->new->load( $path_to_swagger_spec )
     );
 
-    my $api_blueprint_string = $s2md->api_blueprint;
+    my $api_bp_str   = $s2md->api_blueprint;
 
-    my $basic_markdown = $s2md->markdown( %pod_markdown_opts );
+    my $markdown_str = $s2md->markdown( %pod_markdown_opts );
+
+=head1 DESCRIPTION
+
+This module allows you to convert a swagger specification file to API Blueprint
+markdown and basic markdown. Note that you may need to add C<x-> values to your
+swagger config file to get better markdown output.
 
 =cut
 
@@ -47,7 +45,7 @@ use Template;
 use Swagger2::Markdown::API::Blueprint;
 use Pod::Markdown;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 =head1 ATTRIBUTES
 

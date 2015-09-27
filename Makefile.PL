@@ -23,7 +23,7 @@ WriteMakefile(
         'Pod::Markdown'   => '3.000',
     },
     BUILD_REQUIRES => {
-        'Swagger2'              => '0.49',
+        'Swagger2'              => '0.53',
         'File::Find'            => '0',
         'File::Spec::Functions' => '0',
         'File::Slurper'         => '0.006',
