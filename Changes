@@ -1,5 +1,8 @@
 Revision history for Swagger2-Markdown
 
+0.06     2015-10-21
+        - Move github repo to G3S org
+
 0.05     2015-09-27
         - Update min required version of Swagger2
         - Move SYNOPSIS to before DESCRIPTION in pod

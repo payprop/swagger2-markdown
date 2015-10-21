@@ -4,13 +4,13 @@ Swagger2::Markdown - convert a Swagger2 spec to various markdown formats
 
 <div>
 
-    <a href='https://travis-ci.org/leejo/swagger2-markdown?branch=master'><img src='https://travis-ci.org/leejo/swagger2-markdown.svg?branch=master' alt='Build Status' /></a>
-    <a href='https://coveralls.io/r/leejo/swagger2-markdown?branch=master'><img src='https://coveralls.io/repos/leejo/swagger2-markdown/badge.png?branch=master' alt='Coverage Status' /></a>
+    <a href='https://travis-ci.org/G3S/swagger2-markdown?branch=master'><img src='https://travis-ci.org/G3S/swagger2-markdown.svg?branch=master' alt='Build Status' /></a>
+    <a href='https://coveralls.io/r/G3S/swagger2-markdown?branch=master'><img src='https://coveralls.io/repos/G3S/swagger2-markdown/badge.png?branch=master' alt='Coverage Status' /></a>
 </div>
 
 # VERSION
 
-0.05
+0.06
 
 # SYNOPSIS
 
@@ -149,4 +149,4 @@ This library is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself. If you would like to contribute documentation
 please raise an issue / pull request:
 
-    https://github.com/leejo/swagger2-markdown
+    https://github.com/G3S/swagger2-markdown
