@@ -35,8 +35,8 @@ WriteMakefile(
         resources => {
             license    => 'http://dev.perl.org/licenses/',
             homepage   => 'https://metacpan.org/module/Swagger2::Markdown',
-            bugtracker => 'https://github.com/G3S/swagger2-markdown/issues',
-            repository => 'https://github.com/G3S/swagger2-markdown'
+            bugtracker => 'https://github.com/Humanstate/swagger2-markdown/issues',
+            repository => 'https://github.com/Humanstate/swagger2-markdown'
         },
     },
     test => {
