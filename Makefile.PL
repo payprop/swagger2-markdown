@@ -21,8 +21,6 @@ WriteMakefile(
         'Types::Standard' => '1.000005',
         'Template'        => '2.26',
         'Pod::Markdown'   => '3.000',
-    },
-    BUILD_REQUIRES => {
         'Swagger2'              => '0.53',
         'File::Find'            => '0',
         'File::Spec::Functions' => '0',
