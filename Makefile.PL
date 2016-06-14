@@ -17,11 +17,11 @@ WriteMakefile(
         "bin/swagger2markdown"
     ],
     PREREQ_PM => {
-        'Moo'             => '2.000001',
+        'Moo'             => '2.001001',
         'Types::Standard' => '1.000005',
         'Template'        => '2.26',
-        'Pod::Markdown'   => '3.000',
-        'Swagger2'              => '0.53',
+        'Pod::Markdown'   => '3.005',
+        'Swagger2'              => '0.77',
         'File::Find'            => '0',
         'File::Spec::Functions' => '0',
         'File::Slurper'         => '0.006',
