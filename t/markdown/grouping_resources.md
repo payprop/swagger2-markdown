@@ -72,44 +72,6 @@ The response message
     {
     },
 
-## X-API-BLUEPRINT /message
-
-My Message
-
-Group of all messages-related resources.
-
-This is the first group of resources in this document. It is **recognized** by the **keyword `group`** and its name is `Messages`.
-
-Any following resource definition is considered to be a part of this group until another group is defined. It is **customary** to increase header level of resources (and actions) nested under a resource.
-
-### Resource URL
-
-    X-API-BLUEPRINT http://example.com/message
-
-### Parameters
-
-This resource takes no parameters.
-
-### Responses
-
-## X-API-BLUEPRINT /users
-
-My User
-
-Group of all user-related resources.
-
-This is the second group in this blueprint. For now, no resources were defined here and as such we will omit it from the next installement of this course.
-
-### Resource URL
-
-    X-API-BLUEPRINT http://example.com/users
-
-### Parameters
-
-This resource takes no parameters.
-
-### Responses
-
 # COPYRIGHT AND LICENSE
 
 Unknown author

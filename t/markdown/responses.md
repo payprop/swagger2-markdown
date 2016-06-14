@@ -74,22 +74,6 @@ The response message
     {
     },
 
-## X-API-BLUEPRINT /message
-
-My Message
-
-Group of all messages-related resources.
-
-### Resource URL
-
-    X-API-BLUEPRINT http://example.com/message
-
-### Parameters
-
-This resource takes no parameters.
-
-### Responses
-
 # COPYRIGHT AND LICENSE
 
 Unknown author

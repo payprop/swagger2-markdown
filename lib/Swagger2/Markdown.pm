@@ -10,7 +10,7 @@ Swagger2::Markdown - convert a Swagger2 spec to various markdown formats
 
 =head1 VERSION
 
-0.09
+0.10
 
 =head1 SYNOPSIS
 
@@ -45,7 +45,7 @@ use Template;
 use Swagger2::Markdown::API::Blueprint;
 use Pod::Markdown;
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 =head1 ATTRIBUTES
 

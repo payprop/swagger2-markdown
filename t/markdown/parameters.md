@@ -108,38 +108,6 @@ The response message
     {
     },
 
-## X-API-BLUEPRINT /message/{id}
-
-My Message
-
-Group of all messages-related resources.
-
-### Resource URL
-
-    X-API-BLUEPRINT http://example.com/message/{id}
-
-### Parameters
-
-This resource takes no parameters.
-
-### Responses
-
-## X-API-BLUEPRINT /messages
-
-All My Messages
-
-A resource representing all of my messages in the system.
-
-### Resource URL
-
-    X-API-BLUEPRINT http://example.com/messages
-
-### Parameters
-
-This resource takes no parameters.
-
-### Responses
-
 # COPYRIGHT AND LICENSE
 
 Unknown author

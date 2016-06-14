@@ -78,22 +78,6 @@ The response message
     {
     },
 
-## X-API-BLUEPRINT /message
-
-This is our [resource](http://www.w3.org/TR/di-gloss/#def-resource). It is defined by its [URI](http://www.w3.org/TR/di-gloss/#def-uniform-resource-identifier) or, more precisely, by its [URI Template](http://tools.ietf.org/html/rfc6570).
-
-This resource has no actions specified but we will fix that soon.
-
-### Resource URL
-
-    X-API-BLUEPRINT http://example.com/message
-
-### Parameters
-
-This resource takes no parameters.
-
-### Responses
-
 # COPYRIGHT AND LICENSE
 
 Unknown author

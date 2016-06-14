@@ -1,5 +1,8 @@
 Revision history for Swagger2-Markdown
 
+0.10     2016-06-14
+        - Fix tests for recent versions of Swagger2
+
 0.09     2016-06-14
         - Add query params to URLs to fix aglio warnings
 

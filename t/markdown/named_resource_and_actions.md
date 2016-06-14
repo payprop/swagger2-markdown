@@ -76,22 +76,6 @@ The response message
     {
     },
 
-## X-API-BLUEPRINT /message
-
-My Message
-
-OK, `My Message` probably isn't the best name for our resource but it will do for now. Note the URI `/message` is enclosed in square brackets.
-
-### Resource URL
-
-    X-API-BLUEPRINT http://example.com/message
-
-### Parameters
-
-This resource takes no parameters.
-
-### Responses
-
 # COPYRIGHT AND LICENSE
 
 Unknown author
