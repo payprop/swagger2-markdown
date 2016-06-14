@@ -64,6 +64,7 @@ Retrieve all Messages
     | Name  | In    | Type   | Required | Description                              |
     |------------------------------------------------------------------------------|
     | limit | query | number | No       | The maximum number of results to return. |
+    | page  | query | number | No       | The page to return.                      |
     '------------------------------------------------------------------------------'
 
 ### Responses

@@ -12,7 +12,7 @@ Since a portion of the `Coupon` data structure is shared between the `Coupon` de
 
 # Group Coupons
 
-## Coupons [/coupons]
+## Coupons [/coupons{?limit}]
 
 ### List all Coupons [GET]
 Returns a list of your coupons.

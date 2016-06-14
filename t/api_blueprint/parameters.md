@@ -51,7 +51,7 @@ Note the parameter name `id` is enclosed in curly brackets. We will discuss this
 
 + Response 204
 
-## All My Messages [/messages]
+## All My Messages [/messages{?limit,page}]
 A resource representing all of my messages in the system.
 
 We have added the query URI template parameter - `limit`. This parameter is used for limiting the number of results returned by some actions on this resource. It does not affect every possible action of this resource therefore we will discuss it only at the particular action level below.
@@ -62,6 +62,7 @@ We have added the query URI template parameter - `limit`. This parameter is used
 
     + limit: `3` (number, optional) - The maximum number of results to return.
         + Default: `20`
+    + page (number, optional) - The page to return.
 
 + Response 200 (application/json)
 

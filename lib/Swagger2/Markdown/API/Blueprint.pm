@@ -17,6 +17,12 @@ $Template::Stash::LIST_OPS->{ path_and_query_params } = sub {
     return @{ $params } ? $params : undef;
 };
 
+$Template::Stash::LIST_OPS->{ query_params } = sub {
+    my $list = shift;
+    my $params = [ map { $_->{name} } grep { $_->{in} =~ /query/ } @$list ];
+    return @{ $params } ? $params : undef;
+};
+
 $Template::Stash::LIST_OPS->{ none_path_and_query_params } = sub {
     my $list = shift;
     my $params = [ grep { $_->{in} !~ /path|query/ } @$list ];
@@ -53,17 +59,24 @@ sub _blueprint {
 
 [%- BLOCK resource_section -%]
     [%- IF group; prefix = '##'; ELSE; prefix = '#'; END -%]
+	[%-
+		IF query_params;
+			qpath = path _ '{?' _ query_params.join(',') _ '}';
+		ELSE;
+			qpath = path;
+		END;
+	-%]
     [%- SWITCH o.resource_section -%]
         [%- CASE 'uri' -%]
-[% prefix %] [% path _ "\n" -%]
+[% prefix %] [% qpath _ "\n" -%]
         [%- CASE 'name_uri' -%]
-[% prefix %] [% summary %] [[% e.basePath _ path -%]][% "\n" -%]
+[% prefix %] [% summary %] [[% e.basePath _ qpath -%]][% "\n" -%]
         [%- CASE 'method_uri' -%]
-[% prefix %] [% method | upper %] [% e.basePath _ path -%][% "\n" -%]
+[% prefix %] [% method | upper %] [% e.basePath _ qpath -%][% "\n" -%]
         [%- CASE 'name_method_uri' -%]
-[% prefix %] [% summary %] [[% method | upper %] [% e.basePath _ path -%]][% "\n" -%]
+[% prefix %] [% summary %] [[% method | upper %] [% e.basePath _ qpath -%]][% "\n" -%]
         [%- CASE -%]
-[% IF method.defined %][% prefix %] [% method | upper %] [% e.basePath _ path %][% "\n" %][% END -%]
+[% IF method.defined %][% prefix %] [% method | upper %] [% e.basePath _ qpath %][% "\n" %][% END -%]
     [%- END -%]
 [%- END -%]
 
@@ -285,7 +298,9 @@ sub _blueprint {
         [%- IF method == api_blueprint; NEXT; END -%]
         [%- summary = e.paths.$path.$method.summary -%]
         [%- IF o.simple -%]
-            [%- PROCESS resource_section -%]
+            [%- PROCESS resource_section
+				query_params = e.paths.$path.$method.parameters.query_params
+			-%]
         [%- ELSE -%]
             [%- PROCESS action_section -%]
         [%- END -%]
@@ -318,7 +333,9 @@ FORMAT: 1A
             [%- END -%]
         [%- END -%]
     [%- END -%]
-    [%- PROCESS resource_section -%]
+    [%- PROCESS resource_section 
+		query_params = e.paths.$path.get.parameters.query_params
+	-%]
     [%- IF e.paths.$path.$api_blueprint.defined -%]
         [%- IF group -%]
             [%- e.paths.$path.$api_blueprint.group_description _ "\n" -%]

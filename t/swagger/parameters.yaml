@@ -98,6 +98,11 @@ paths:
           x-example: 3
           default: 20
           required: false
+        - in: query
+          name: page
+          required: false
+          description: The page to return.
+          type: number
       responses:
         200:
           description: The response message

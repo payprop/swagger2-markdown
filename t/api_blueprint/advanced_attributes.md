@@ -16,7 +16,7 @@ The `Create a Coupon` action also demonstrate the description of request attribu
 
 # Group Coupons
 
-## Coupons [/coupons]
+## Coupons [/coupons{?limit}]
 
 ### List all Coupons [GET]
 Returns a list of your coupons.

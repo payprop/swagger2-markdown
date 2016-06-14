@@ -19,7 +19,6 @@ t/markdown/grouping_resources.md
 t/markdown/hello_world.md
 t/markdown/named_resource_and_actions.md
 t/markdown/parameters.md
-t/markdown/payprop.md
 t/markdown/requests.md
 t/markdown/resource_and_actions.md
 t/markdown/responses.md
@@ -30,7 +29,6 @@ t/api_blueprint/grouping_resources.md
 t/api_blueprint/hello_world.md
 t/api_blueprint/named_resource_and_actions.md
 t/api_blueprint/parameters.md
-t/api_blueprint/payprop.md
 t/api_blueprint/requests.md
 t/api_blueprint/resource_and_actions.md
 t/api_blueprint/responses.md
@@ -42,7 +40,6 @@ t/swagger/grouping_resources.yaml
 t/swagger/hello_world.yaml
 t/swagger/named_resource_and_actions.yaml
 t/swagger/parameters.yaml
-t/swagger/payprop.yaml
 t/swagger/requests.yaml
 t/swagger/resource_and_actions.yaml
 t/swagger/responses.yaml
