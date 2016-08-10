@@ -111,7 +111,10 @@ sub _blueprint {
                     schema.type;
                 END;
             ELSE;
-                schema.type;
+                FOREACH t IN schema.type;
+                    t.defined ? t : 'null';
+                    LAST;
+                END;
             END;
         ELSE;
             schema.type;

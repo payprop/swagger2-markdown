@@ -107,7 +107,9 @@ definitions:
         description: Time stamp
         x-example: 1415203908
       percent_off:
-        type: number
+        type:
+          - number
+          - null
         x-example: 25
         description: |
 
