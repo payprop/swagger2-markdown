@@ -10,7 +10,13 @@ Swagger2::Markdown - convert a Swagger2 spec to various markdown formats
 
 # VERSION
 
-0.11
+0.12
+
+# DEPRECATION WARNING
+
+The Swagger2 distribution is no longer actively maintained. Ergo, this distribution
+is no longer actively maintained. If you would like to create an OpenAPI2::Markdown
+then please feel free.
 
 # SYNOPSIS
 

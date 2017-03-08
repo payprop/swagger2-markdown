@@ -10,7 +10,13 @@ Swagger2::Markdown - convert a Swagger2 spec to various markdown formats
 
 =head1 VERSION
 
-0.11
+0.12
+
+=head1 DEPRECATION WARNING
+
+The Swagger2 distribution is no longer actively maintained. Ergo, this distribution
+is no longer actively maintained. If you would like to create an OpenAPI2::Markdown
+then please feel free.
 
 =head1 SYNOPSIS
 
@@ -45,7 +51,7 @@ use Template;
 use Swagger2::Markdown::API::Blueprint;
 use Pod::Markdown;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 =head1 ATTRIBUTES
 

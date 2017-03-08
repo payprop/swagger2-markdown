@@ -1,5 +1,9 @@
 Revision history for Swagger2-Markdown
 
+0.12     2017-03-08
+        - Fix t/010_api_blueprint.t with SKIP due to breaking changes in Swagger2
+        - Add documentation regarding deprecation of Swagger2
+
 0.11     2016-08-10
         - Fix API Blueprint output for multiple types
 
